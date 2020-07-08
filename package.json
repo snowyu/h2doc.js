@@ -1,7 +1,7 @@
 {
   "name": "h2doc",
   "description": "prcocess html to a specified format document",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Riceball LEE @snowyu",
   "bin": {
     "h2doc": "./bin/run"
@@ -95,7 +95,12 @@
   ],
   "homepage": "https://github.com/snowyu/h2doc",
   "keywords": [
-    "oclif"
+    "html",
+    "markdown",
+    "convert",
+    "tool",
+    "download",
+    "scrape"
   ],
   "license": "MIT",
   "main": "lib/index.js",
