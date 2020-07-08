@@ -88,6 +88,7 @@
     "node": ">=8.0.0"
   },
   "files": [
+    "oclif-setup.js",
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
