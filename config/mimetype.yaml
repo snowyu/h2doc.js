@@ -1,0 +1,36 @@
+image: &image
+  - image/*
+video: &video
+  - video/*
+audio: &audio
+  - audio/*
+media:
+  - *video
+  - *audio
+  - application/ogg
+  - application/x-shockwave-flash
+document:
+  - text/*
+  - application/pdf
+  - application/epub+zip
+  - application/msword
+  - application/rtf
+  - application/vnd.ms-powerpoint
+  - application/vnd.visio
+  - application/vnd.ms-excel
+  - application/vnd.openxmlformats*
+  - application/vnd.oasis.opendocument*
+  - application/json
+  - application/ld+json
+  - application/xhtml+xml
+archive:
+  - application/x-bzip
+  - application/x-bzip2
+  - application/gzip
+  - application/vnd.rar
+  - application/x-tar
+  - application/zip
+  - application/x-7z-compressed
+font:
+  - font/*
+  - application/vnd.ms-fontobject

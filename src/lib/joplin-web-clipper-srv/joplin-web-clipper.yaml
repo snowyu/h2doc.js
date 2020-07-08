@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Joplin API
+  version: '1.0'
+  description: 'Communicate With Web Clipper '
+  license:
+    name: MIT
+  termsOfService: 'https://joplinapp.org/api/'
+servers:
+  - url: 'http://localhost:41184'
+tags:
+  - name: joplinRest
+    description: joplin rest api server
+  - name: joplinSearch
+    description: joplin search api server
+paths:
+  /ping:
+    get:
+      summary: ''
+      tags:
+        - joplinRest
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: JoplinClipperServer
+              examples:
+                output:
+                  value: JoplinClipperServer
+      operationId: ping
+      description: ping the server
+  /folders:
+    get:
+      summary: get the folder info by id
+      tags:
+        - joplinRest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Folder'
+              examples:
+                example: {}
+      operationId: listFolders
+      description: ''
+    parameters: []
+  /notes:
+    get:
+      summary: ''
+      tags:
+        - joplinRest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+      operationId: listNotes
+      description: ''
+    post:
+      summary: ''
+      operationId: createNote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+      description: create a new note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+      tags:
+        - joplinRest
+  /tags:
+    get:
+      summary: ''
+      tags:
+        - joplinRest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+      operationId: listTags
+      description: ''
+    post:
+      summary: ''
+      operationId: createTag
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      security:
+        - ? d1417efe90ee4e7fd8c197f71c581f2e05f0f0d6fb274720f17918d9397e9ca09ea68b84215f743e43ec88ef8577f51d9671a3d141945980f73a8686792e60e8
+          : []
+      tags:
+        - joplinRest
+components:
+  schemas:
+    Tag:
+      title: Tag
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    Note:
+      title: Note
+      type: object
+      description: ''
+      properties:
+        parent_id:
+          description: ID of the notebook that contains this note. Change this ID to move the note to a different notebook.
+          type: string
+        title:
+          type: string
+          description: The note title.
+        markup_language:
+          type: integer
+          enum:
+            - 1
+            - 2
+          description: MARKDOWN = 1;HTML = 2
+          default: 1
+        author:
+          type: string
+        source_url:
+          type: string
+          description: The full URL where the note comes from.
+        body_html:
+          type: string
+          description: 'Note body, in HTML format'
+        base_url:
+          type: string
+          description: "If `body_html` is provided and contains relative URLs, provide the `base_url` parameter too so that all the URLs can be converted to absolute ones. The base URL is basically where the HTML was fetched from, minus the query (everything after the '?'). For example if the original page was `https://stackoverflow.com/search?q=%5Bjava%5D+test`, the base URL is `https://stackoverflow.com/search`."
+        source_command:
+          type: object
+        tags:
+          type: string
+        convert_to:
+          type: string
+        image_sizes:
+          type: object
+        anchor_names:
+          type: array
+          items: {}
+    Folder:
+      title: Folder
+      type: object
+      description: 'This is actually a notebook. Internally notebooks are called "folders".'
+      x-examples: {}
+      properties:
+        id:
+          type: string
+        parent_id:
+          type: string
+        title:
+          type: string
+  securitySchemes:
+    ? d1417efe90ee4e7fd8c197f71c581f2e05f0f0d6fb274720f17918d9397e9ca09ea68b84215f743e43ec88ef8577f51d9671a3d141945980f73a8686792e60e8
+    : name: token
+      type: apiKey
+      in: query
+      description: 'To prevent unauthorised applications from accessing the API, the calls must be authentified. To do so, you must provide a token as a query parameter for each API call. You can get this token from the Joplin desktop application, on the Web Clipper Options screen.'
+security:
+  - token: []

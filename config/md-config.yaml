@@ -1,0 +1,52 @@
+# .web-clipper-srv.yaml
+# default config
+output:
+  root: .
+  exclude:
+    - node_modules
+  deep: 5 # Specifies the maximum depth of a read directory relative to the root.
+  markdown: ${folder}/${title}.md # whether use the smart slug as markdown file name
+  asset: ${folder}/${title}/
+  assetBaseName: ${assetBaseName} # do not include extname
+slug: # the smart slug options, if it is string which means separator
+  separator: '-' # String to replace whitespace with, defaults to -
+  lang: '' # ISO 639-1 two-letter language code, defaults to auto-detected language
+  tone: false # add tone numbers to Pinyin transliteration of Chinese, defaults to true
+  separateNumbers: false # separate numbers that are within a word, defaults to false
+  maintainCase: false # maintain the original string's casing, defaults to false
+  # custom: could be object or array
+  #   Object, custom map for translation, overwrites all i.e. { '&': '#', '*': ' star ' }
+  #   Array, add chars to allowed charMap
+download: # whether download assets
+  deep: 0
+  type:
+    - image
+    - document
+    - audio
+    - video
+format:
+  headingStyle: 'atx' # setext or atx
+  hr: '---'
+  bulletListMarker: '*'
+  codeBlockStyle: 'fenced' # indented or fenced
+  fence: '```' # ``` or ~~~
+  emDelimiter: '_' # _ or *
+  strongDelimiter: '**' # ** or __
+  linkStyle: 'inlined' # inlined or referenced
+  linkReferenceStyle: 'full' # full, collapsed, or shortcut
+  gfw:
+    strikethrough: true # for converting <strike>, <s>, and <del> elements
+    tables: true
+    taskListItems: true
+frontMatter: # whether use front matter.
+  title: true
+  url: true
+  author: true
+  date: true
+  publisher: true
+  lang: true
+  description: true
+  image: true
+  video: true
+  audio: true
+mimetype: !!inc/file mimetype.yaml
