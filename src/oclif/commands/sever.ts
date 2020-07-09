@@ -30,12 +30,16 @@ export default class Sever extends Command {
   ];
 
   async run() {
-    this.log(color.blue('Joplin Web Clipper Server'));
+    this.log(
+      color.blue('Joplin Web Clipper Server') +
+        ' for ' +
+        color.cyanBright('https://joplinapp.org/clipper/')
+    );
     const { args, flags } = this.parse(Sever);
     const { port, host } = flags;
     const { dir } = args;
     setConfig({ output: { root: dir } });
-    this.log(`Web Clipper stored on '${dir}'`);
+    this.log(`Web Clips will be stored on '${dir}' folder`);
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
     this.log(`listening on ${svr.info.uri}`);
