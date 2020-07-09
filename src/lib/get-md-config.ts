@@ -6,6 +6,7 @@ import { defaultsDeep, uniq as unique } from 'lodash';
 import os from 'os';
 import path from 'path';
 import loadConfig from './load-config';
+import { replaceEnv } from './replace-env';
 
 export const mdConfig = new loadConfig({
   file: ['.md-config', 'md-config'],
@@ -145,6 +146,7 @@ function initOutConfig(conf: ApplicationConfig) {
   if (!out.markdown) out.markdown = '${folder}/${title}.md';
   if (!out.asset) out.asset = '${folder}/${title}';
   if (!out.assetBaseName) out.assetBaseName = '${imgName}';
+  out.root = replaceEnv(out.root);
   return conf;
 }
 
