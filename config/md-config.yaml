@@ -1,4 +1,4 @@
-# .web-clipper-srv.yaml
+# .md-config.yaml
 # default config
 output:
   root: .

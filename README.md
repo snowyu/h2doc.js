@@ -1,6 +1,6 @@
 # h2doc
 
-html to document
+Prcocess html to a specified format document.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/h2doc.svg)](https://npmjs.org/package/h2doc)
@@ -8,36 +8,130 @@ html to document
 [![License](https://img.shields.io/npm/l/h2doc.svg)](https://github.com/snowyu/h2doc/blob/master/package.json)
 
 <!-- toc -->
-* [h2doc](#h2doc)
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [h2doc](#h2doc)
+- [Usage](#usage)
+    - [Configuaration](#configuaration)
+  - [Features](#features)
+- [.md-config.yaml](#md-configyaml)
+- [the config should be put in](#the-config-should-be-put-in)
+- [custom: could be object or array](#custom-could-be-object-or-array)
+- [Object, custom map for translation, overwrites all i.e. { '&': '#', '*': ' star ' }](#object-custom-map-for-translation-overwrites-all-ie------star--)
+- [Array, add chars to allowed charMap](#array-add-chars-to-allowed-charmap)
+- [Commands](#commands)
+  - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+  - [`h2doc help [COMMAND]`](#h2doc-help-command)
+  - [`h2doc server [DIR]`](#h2doc-server-dir)
+  - [`h2doc tags FOLDER`](#h2doc-tags-folder)
+  <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g h2doc
 $ h2doc COMMAND
 running command...
 $ h2doc (-v|--version|version)
-h2doc/0.0.2 linux-x64 node-v12.18.2
+h2doc/0.0.3 linux-x64 node-v12.18.2
 $ h2doc --help [COMMAND]
 USAGE
   $ h2doc COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
+### Configuaration
+
+## Features
+
+- Save markdown and pics to the current(specified) folder(`root`)
+- decides the rules for stored file name and dir name:
+  1. markdown file with the same makrdown name folder
+     - markdown file: `${folder}/${title}.md`
+     - markdown assets folder: `${folder}/${title}/`
+     - markdown assets base file name: `${assetBaseName}`
+  2. markdown name folder, index(README).md as markdown name in folder
+     - markdown file: `${folder}/${title}/index.md`
+     - markdown assets folder: `${folder}/${title}/`
+     - markdown assets base file name: `${assetBaseName}`
+  - you can customize by youself
+
+* `folder`: the relative to `root` directory (come from Joplin Web Clipper)
+* `title`: (come from Joplin Web Clipper)
+* `assetBaseName`: the name should not include the `extname`.
+* `date`: the ISO format date time.
+* `index`: the index number of asset.
+* `slug` : the smart slug of the title.
+* `shortid()`: return the short unique id.
+* `toSlug(str)`: convert the str to a smart slug.
+
+The config file name could be `.md-config.(yaml|json)` or `md-config.(yaml|json)`.
+
+The config file search order:
+
+1. ./.md-config.(yaml|json)
+2. ~/.md-config.(yaml|json)
+3. \$APP/config/.md-config.(yaml|json)
+
+````yml
+# .md-config.yaml
+# the config should be put in
+output:
+  root: .
+  exclude:
+    - node_modules
+  deep: 5 # Specifies the maximum depth of a read directory relative to the root.
+  markdown: ${folder}/${title}.md # whether use the smart slug as markdown file name
+  asset: ${folder}/${title}/
+  assetBaseName: ${assetBaseName} # do not include extname
+slug: # the smart slug options, if it is string which means separator
+  separator: '-' # String to replace whitespace with, defaults to -
+  lang: '' # ISO 639-1 two-letter language code, defaults to auto-detected language
+  tone: false # add tone numbers to Pinyin transliteration of Chinese, defaults to true
+  separateNumbers: false # separate numbers that are within a word, defaults to false
+  maintainCase: false # maintain the original string's casing, defaults to false
+  # custom: could be object or array
+  #   Object, custom map for translation, overwrites all i.e. { '&': '#', '*': ' star ' }
+  #   Array, add chars to allowed charMap
+download: true # whether download assets
+format: # WARNING: these options maybe changed in the future
+  headingStyle: 'atx' # setext or atx
+  hr: '---'
+  bulletListMarker: '*'
+  codeBlockStyle: 'fenced' # indented or fenced
+  fence: '```' # ``` or ~~~
+  emDelimiter: '_' # _ or *
+  strongDelimiter: '**' # ** or __
+  linkStyle: 'inlined' # inlined or referenced
+  linkReferenceStyle: 'full' # full, collapsed, or shortcut
+  gfw:
+    strikethrough: true # for converting <strike>, <s>, and <del> elements
+    tables: true
+    taskListItems: true
+frontMatter: # whether use front matter(insert into markdown).
+  title: true
+  url: true
+  author: true
+  date: true
+  publisher: true
+  lang: true
+  description: true
+  image: true
+  video: true
+  audio: true
+````
 
 # Commands
 
 <!-- commands -->
-* [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-* [`h2doc download URL`](#h2doc-download-url)
-* [`h2doc help [COMMAND]`](#h2doc-help-command)
-* [`h2doc markdown URL|FILE [SECOND URL|FILE] [...]`](#h2doc-markdown-urlfile-second-urlfile-)
-* [`h2doc sever [DIR]`](#h2doc-sever-dir)
-* [`h2doc tags FOLDER`](#h2doc-tags-folder)
+
+- [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+- [`h2doc help [COMMAND]`](#h2doc-help-command)
+- [`h2doc server [DIR]`](#h2doc-server-dir)
+- [`h2doc tags FOLDER`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -62,25 +156,6 @@ EXAMPLES
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v0.2.0/src/commands/autocomplete/index.ts)_
 
-## `h2doc download URL`
-
-download html from a url only
-
-```
-USAGE
-  $ h2doc download URL
-
-ARGUMENTS
-  URL  the html url or file to be processed
-
-OPTIONS
-  -f, --[no-]force            defaults to overwrite existing files
-  -h, --help                  show CLI help
-  -t, --format=markdown|html  [default: markdown] the converted format
-```
-
-_See code: [src/oclif/commands/download.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/download.ts)_
-
 ## `h2doc help [COMMAND]`
 
 display help for h2doc
@@ -98,36 +173,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.1.0/src/commands/help.ts)_
 
-## `h2doc markdown URL|FILE [SECOND URL|FILE] [...]`
-
-process html url or file and convert to markdown format and save the images
-
-```
-USAGE
-  $ h2doc markdown URL|FILE [SECOND URL|FILE] [...]
-
-ARGUMENTS
-  URL|FILE         the html url or file to be processed
-  SECOND URL|FILE
-  ...
-
-OPTIONS
-  -h, --help           show CLI help
-  -o, --output=output  [default: .] the folder to output, defaults to current dir
-
-ALIASES
-  $ h2doc md
-```
-
-_See code: [src/oclif/commands/markdown.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/markdown.ts)_
-
-## `h2doc sever [DIR]`
+## `h2doc server [DIR]`
 
 The Joplin Web Clipper Server to save markdown and images
 
 ```
 USAGE
-  $ h2doc sever [DIR]
+  $ h2doc server [DIR]
 
 ARGUMENTS
   DIR  [default: .] which folder to save
@@ -146,7 +198,7 @@ ALIASES
   $ h2doc svr
 ```
 
-_See code: [src/oclif/commands/sever.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/sever.ts)_
+_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.0.3/src/oclif/commands/server.ts)_
 
 ## `h2doc tags FOLDER`
 
@@ -175,5 +227,6 @@ OPTIONS
   --sort=sort             property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/tags.ts)_
+_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.3/src/oclif/commands/tags.ts)_
+
 <!-- commandsstop -->
