@@ -2,6 +2,7 @@ import { Command, flags } from '@oclif/command';
 
 export default class Download extends Command {
   static description = 'download html from a url only';
+  static hidden = true;
 
   static flags = {
     help: flags.help({ char: 'h' }),

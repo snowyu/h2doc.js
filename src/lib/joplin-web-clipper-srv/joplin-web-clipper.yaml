@@ -118,8 +118,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Tag'
       security:
-        - ? d1417efe90ee4e7fd8c197f71c581f2e05f0f0d6fb274720f17918d9397e9ca09ea68b84215f743e43ec88ef8577f51d9671a3d141945980f73a8686792e60e8
-          : []
+        - 97f71c581f2e05f0f0d6fb274720f: []
       tags:
         - joplinRest
 components:
@@ -185,8 +184,8 @@ components:
         title:
           type: string
   securitySchemes:
-    ? d1417efe90ee4e7fd8c197f71c581f2e05f0f0d6fb274720f17918d9397e9ca09ea68b84215f743e43ec88ef8577f51d9671a3d141945980f73a8686792e60e8
-    : name: token
+    f2e05f0f0d6fb274720f17918d:
+      name: token
       type: apiKey
       in: query
       description: 'To prevent unauthorised applications from accessing the API, the calls must be authentified. To do so, you must provide a token as a query parameter for each API call. You can get this token from the Joplin desktop application, on the Web Clipper Options screen.'

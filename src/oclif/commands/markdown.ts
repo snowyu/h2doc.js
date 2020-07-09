@@ -7,6 +7,7 @@ import { setConfig } from '../../lib/get-md-config';
 
 export default class Markdown extends Command {
   static strict = false;
+  static hidden = true;
   static description =
     'process html url or file and convert to markdown format and save the images';
 
