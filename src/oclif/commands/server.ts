@@ -1,7 +1,7 @@
 import { color } from '@oclif/color';
 import { Command, flags } from '@oclif/command';
+import { createJoplinWebClipperServer } from '../../joplin-web-clipper-srv';
 import { setConfig } from '../../lib/get-md-config';
-import { createJoplinWebClipperServer } from '../../lib/joplin-web-clipper-srv';
 
 export default class Server extends Command {
   static description = `The Joplin Web Clipper Server to save markdown and images
