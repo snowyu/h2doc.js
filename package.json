@@ -88,6 +88,7 @@
   },
   "files": [
     "oclif-setup.js",
+    "/config",
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
