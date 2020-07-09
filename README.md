@@ -10,14 +10,9 @@ Prcocess html to a specified format document.
 <!-- toc -->
 
 - [h2doc](#h2doc)
+- [Features](#features)
 - [Usage](#usage)
-    - [Configuaration](#configuaration)
-  - [Features](#features)
-- [.md-config.yaml](#md-configyaml)
-- [the config should be put in](#the-config-should-be-put-in)
-- [custom: could be object or array](#custom-could-be-object-or-array)
-- [Object, custom map for translation, overwrites all i.e. { '&': '#', '*': ' star ' }](#object-custom-map-for-translation-overwrites-all-ie------star--)
-- [Array, add chars to allowed charMap](#array-add-chars-to-allowed-charmap)
+  - [Configuaration](#configuaration)
 - [Commands](#commands)
   - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
   - [`h2doc help [COMMAND]`](#h2doc-help-command)
@@ -25,27 +20,7 @@ Prcocess html to a specified format document.
   - [`h2doc tags FOLDER`](#h2doc-tags-folder)
   <!-- tocstop -->
 
-# Usage
-
-<!-- usage -->
-
-```sh-session
-$ npm install -g h2doc
-$ h2doc COMMAND
-running command...
-$ h2doc (-v|--version|version)
-h2doc/0.0.3 linux-x64 node-v12.18.2
-$ h2doc --help [COMMAND]
-USAGE
-  $ h2doc COMMAND
-...
-```
-
-<!-- usagestop -->
-
-### Configuaration
-
-## Features
+# Features
 
 - Save markdown and pics to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
@@ -68,6 +43,26 @@ USAGE
 * `shortid()`: return the short unique id.
 * `toSlug(str)`: convert the str to a smart slug.
 
+# Usage
+
+<!-- usage -->
+
+```sh-session
+$ npm install -g h2doc
+$ h2doc COMMAND
+running command...
+$ h2doc (-v|--version|version)
+h2doc/0.0.3 linux-x64 node-v12.18.2
+$ h2doc --help [COMMAND]
+USAGE
+  $ h2doc COMMAND
+...
+```
+
+<!-- usagestop -->
+
+## Configuaration
+
 The config file name could be `.md-config.(yaml|json)` or `md-config.(yaml|json)`.
 
 The config file search order:
@@ -77,10 +72,8 @@ The config file search order:
 3. \$APP/config/.md-config.(yaml|json)
 
 ````yml
-# .md-config.yaml
-# the config should be put in
 output:
-  root: .
+  root: . # the root folder, defaults to current working directory.
   exclude:
     - node_modules
   deep: 5 # Specifies the maximum depth of a read directory relative to the root.
@@ -93,9 +86,6 @@ slug: # the smart slug options, if it is string which means separator
   tone: false # add tone numbers to Pinyin transliteration of Chinese, defaults to true
   separateNumbers: false # separate numbers that are within a word, defaults to false
   maintainCase: false # maintain the original string's casing, defaults to false
-  # custom: could be object or array
-  #   Object, custom map for translation, overwrites all i.e. { '&': '#', '*': ' star ' }
-  #   Array, add chars to allowed charMap
 download: true # whether download assets
 format: # WARNING: these options maybe changed in the future
   headingStyle: 'atx' # setext or atx
