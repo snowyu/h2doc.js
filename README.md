@@ -21,7 +21,7 @@ $ npm install -g h2doc
 $ h2doc COMMAND
 running command...
 $ h2doc (-v|--version|version)
-h2doc/0.0.1 linux-x64 node-v12.18.2
+h2doc/0.0.2 linux-x64 node-v12.18.2
 $ h2doc --help [COMMAND]
 USAGE
   $ h2doc COMMAND
@@ -79,7 +79,7 @@ OPTIONS
   -t, --format=markdown|html  [default: markdown] the converted format
 ```
 
-_See code: [src/oclif/commands/download.ts](https://github.com/snowyu/h2doc/blob/v0.0.1/src/oclif/commands/download.ts)_
+_See code: [src/oclif/commands/download.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/download.ts)_
 
 ## `h2doc help [COMMAND]`
 
@@ -119,7 +119,7 @@ ALIASES
   $ h2doc md
 ```
 
-_See code: [src/oclif/commands/markdown.ts](https://github.com/snowyu/h2doc/blob/v0.0.1/src/oclif/commands/markdown.ts)_
+_See code: [src/oclif/commands/markdown.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/markdown.ts)_
 
 ## `h2doc sever [DIR]`
 
@@ -146,7 +146,7 @@ ALIASES
   $ h2doc svr
 ```
 
-_See code: [src/oclif/commands/sever.ts](https://github.com/snowyu/h2doc/blob/v0.0.1/src/oclif/commands/sever.ts)_
+_See code: [src/oclif/commands/sever.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/sever.ts)_
 
 ## `h2doc tags FOLDER`
 
@@ -175,5 +175,5 @@ OPTIONS
   --sort=sort             property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.1/src/oclif/commands/tags.ts)_
+_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.2/src/oclif/commands/tags.ts)_
 <!-- commandsstop -->

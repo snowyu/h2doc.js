@@ -93,7 +93,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/snowyu/h2doc",
+  "homepage": "https://github.com/snowyu/h2doc.js",
   "keywords": [
     "html",
     "markdown",
