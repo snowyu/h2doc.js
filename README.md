@@ -8,10 +8,16 @@ Prcocess html to a specified format document.
 [![License](https://img.shields.io/npm/l/h2doc.svg)](https://github.com/snowyu/h2doc/blob/master/package.json)
 
 <!-- toc -->
-* [h2doc](#h2doc)
-* [Features](#features)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [h2doc](#h2doc)
+- [Features](#features)
+- [Usage](#usage)
+  - [Configuaration](#configuaration)
+- [Commands](#commands)
+  - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+  - [`h2doc help [COMMAND]`](#h2doc-help-command)
+  - [`h2doc server [DIR]`](#h2doc-server-dir)
+  - [`h2doc tags FOLDER`](#h2doc-tags-folder)
 <!-- tocstop -->
 
 # Features
@@ -40,6 +46,7 @@ Prcocess html to a specified format document.
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g h2doc
 $ h2doc COMMAND
@@ -51,6 +58,7 @@ USAGE
   $ h2doc COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 ## Configuaration
@@ -109,10 +117,11 @@ frontMatter: # whether use front matter(insert into markdown).
 # Commands
 
 <!-- commands -->
-* [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-* [`h2doc help [COMMAND]`](#h2doc-help-command)
-* [`h2doc server [DIR]`](#h2doc-server-dir)
-* [`h2doc tags FOLDER`](#h2doc-tags-folder)
+
+- [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+- [`h2doc help [COMMAND]`](#h2doc-help-command)
+- [`h2doc server [DIR]`](#h2doc-server-dir)
+- [`h2doc tags FOLDER`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -209,4 +218,5 @@ OPTIONS
 ```
 
 _See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.4/src/oclif/commands/tags.ts)_
+
 <!-- commandsstop -->
