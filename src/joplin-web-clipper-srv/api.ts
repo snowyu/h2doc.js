@@ -7,7 +7,7 @@ import { getTags } from '../lib/list-tags';
 
 // create api with your definition file or object
 const api = new OpenAPIBackend({
-  definition: path.resolve(__dirname, './joplin-web-clipper.yaml'),
+  definition: path.resolve(__dirname, '../../config/joplin-web-clipper.yaml'),
 });
 
 api.register({
