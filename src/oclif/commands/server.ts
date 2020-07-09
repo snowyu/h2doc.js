@@ -1,7 +1,7 @@
 import { color } from '@oclif/color';
 import { Command, flags } from '@oclif/command';
 import { createJoplinWebClipperServer } from '../../joplin-web-clipper-srv';
-import { setConfig } from '../../lib/get-md-config';
+import { getConfig, setConfig } from '../../lib/get-md-config';
 
 export default class Server extends Command {
   static description = `The Joplin Web Clipper Server to save markdown and images
@@ -25,9 +25,7 @@ export default class Server extends Command {
     // force: flags.boolean({ char: 'f' }),
   };
 
-  static args = [
-    { name: 'dir', description: 'which folder to save ', default: '.' },
-  ];
+  static args = [{ name: 'dir', description: 'which folder to save' }];
 
   async run() {
     this.log(
@@ -38,8 +36,9 @@ export default class Server extends Command {
     const { args, flags } = this.parse(Server);
     const { port, host } = flags;
     const { dir } = args;
-    setConfig({ output: { root: dir } });
-    this.log(`Web Clips will be stored on '${dir}' folder`);
+    if (dir) await setConfig({ output: { root: dir } });
+    const conf = await getConfig();
+    this.log(`Web Clips will be stored on '${conf.output.root}' folder`);
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
     this.log(`listening on ${svr.info.uri}`);
