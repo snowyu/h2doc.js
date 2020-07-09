@@ -34,7 +34,7 @@ Prcocess html to a specified format document.
      - markdown assets base file name: `${assetBaseName}`
   - you can customize by youself
 
-* `folder`: the relative to `root` directory (come from Joplin Web Clipper)
+* `folder`: the relative to `root` directory (coming from Joplin Web Clipper)
 * `title`: (come from Joplin Web Clipper)
 * `assetBaseName`: the name should not include the `extname`.
 * `date`: the ISO format date time.
