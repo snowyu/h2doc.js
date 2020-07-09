@@ -3,7 +3,7 @@ import { Command, flags } from '@oclif/command';
 import { setConfig } from '../../lib/get-md-config';
 import { createJoplinWebClipperServer } from '../../lib/joplin-web-clipper-srv';
 
-export default class Sever extends Command {
+export default class Server extends Command {
   static description = `The Joplin Web Clipper Server to save markdown and images
   `;
   static aliases = ['default', 'srv', 'svr'];
