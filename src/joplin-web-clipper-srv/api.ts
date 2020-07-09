@@ -1,9 +1,9 @@
 import { Request, ResponseToolkit } from '@hapi/hapi';
 import OpenAPIBackend, { Context } from 'openapi-backend';
 import path from 'path';
-import { htmlToMarkdown, IInputOptions } from '../html-to-markdown';
-import { getFolders } from '../list-dirs';
-import { getTags } from '../list-tags';
+import { htmlToMarkdown, IInputOptions } from '../lib/html-to-markdown';
+import { getFolders } from '../lib/list-dirs';
+import { getTags } from '../lib/list-tags';
 
 // create api with your definition file or object
 const api = new OpenAPIBackend({
