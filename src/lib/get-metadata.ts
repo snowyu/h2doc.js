@@ -17,7 +17,13 @@ import got from 'got';
 // const got = require('got');
 
 export async function getMetadata(targetUrl: string) {
-  const {body: html, url} = await got(targetUrl);
-  const metadata = await metascraper({html, url});
+  const { body: html, url } = await got(targetUrl);
+  let metadata;
+  try {
+    metadata = await metascraper({ html, url });
+  } catch (e) {
+    console.error('getMetadata error', e);
+    metadata = {};
+  }
   return metadata;
 }
