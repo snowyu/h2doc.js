@@ -13,8 +13,8 @@ module.exports = {
   "hooks": {
     "before:init": ["npm test"],
     "after:bump": [
-      "npx auto-changelog -p",
-      "npm run build"
+      // "npx auto-changelog -p",
+      "npm run build",
     ]
   }
 }
