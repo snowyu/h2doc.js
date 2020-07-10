@@ -34,7 +34,7 @@ export default class Server extends Command {
         color.cyanBright('https://joplinapp.org/clipper/')
     );
     const { args, flags } = this.parse(Server);
-    const { port, host } = flags;
+    // const { port, host } = flags;
     const { dir } = args;
     if (dir) await setConfig({ output: { root: dir } });
     const conf = await getConfig();

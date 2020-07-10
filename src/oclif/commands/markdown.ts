@@ -3,7 +3,6 @@ import { Command, flags } from '@oclif/command';
 import figlet from 'figlet';
 // import { CLIError, error } from '@oclif/errors';
 import fs from 'fs';
-import { setConfig } from '../../lib/get-md-config';
 
 export default class Markdown extends Command {
   static strict = false;
@@ -48,11 +47,13 @@ export default class Markdown extends Command {
       })
     );
     // this.exit();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { flags } = this.parse(Markdown);
     return;
+    /*
     setConfig({ output: { root: flags.output } });
     const { urls, files } = await this.validateUrls(this.argv.filter(Boolean));
-
+    */
     // const tasks = genDownloadTasks(urls);
   }
 
@@ -85,19 +86,19 @@ export default class Markdown extends Command {
   }
 }
 
-function isValidUrl(url: string) {
+export function isValidUrl(url: string) {
   return isSupportedProtocol(url) || fs.existsSync(url);
 }
 
 function isSupportedProtocol(file: string) {
-  var supportedProtocols = ['s3', 'ftp', 'http', 'https', 'scp', 'file'];
-  var protocol = getProtocol(file);
+  const supportedProtocols = ['s3', 'ftp', 'http', 'https', 'scp', 'file'];
+  const protocol = getProtocol(file);
   const result = supportedProtocols.indexOf(protocol) !== -1;
   return result;
 }
 
 function getProtocol(file: string) {
-  var data = file.split('://');
+  const data = file.split('://');
 
   return data.length > 1 ? data[0] : '';
 }

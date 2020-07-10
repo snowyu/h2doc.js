@@ -29,7 +29,7 @@ export function genDownloadTasks(
   const tasks: IDownloadTask<IDownloadCtx>[] = aUrls.map(url => ({
     url,
     title: `${title}: ${url}`,
-    async task(ctx, task) {
+    async task(ctx, _task) {
       const response = await got(url);
       const result = { url, content: response.rawBody };
       if (Array.isArray(ctx?.result)) ctx.result.push(result);
