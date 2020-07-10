@@ -3,6 +3,7 @@ module.exports = {
     "publish": true
   },
   "git": {
+    "requireCleanWorkingDir": false,
     "changelog": "npx auto-changelog --stdout --commit-limit false --unreleased --template config/changelog-compact.hbs",
     "commitMessage": "chore(build): release v${version}"
   },
