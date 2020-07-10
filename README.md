@@ -45,7 +45,7 @@ $ npm install -g h2doc
 $ h2doc COMMAND
 running command...
 $ h2doc (-v|--version|version)
-h2doc/0.0.6 linux-x64 node-v12.18.2
+h2doc/0.1.0-alpha.0 linux-x64 node-v12.18.2
 $ h2doc --help [COMMAND]
 USAGE
   $ h2doc COMMAND
@@ -179,7 +179,7 @@ ALIASES
   $ h2doc svr
 ```
 
-_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.0.6/src/oclif/commands/server.ts)_
+_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.0/src/oclif/commands/server.ts)_
 
 ## `h2doc tags FOLDER`
 
@@ -208,5 +208,5 @@ OPTIONS
   --sort=sort             property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.0.6/src/oclif/commands/tags.ts)_
+_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.0/src/oclif/commands/tags.ts)_
 <!-- commandsstop -->
