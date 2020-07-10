@@ -33,7 +33,23 @@
     "typescript",
     "typescriptreact"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.ignoreWords": [
+    "arrow",
+    "arrow parens",
+    "globby",
+    "laabr",
+    "limax",
+    "listr",
+    "parens",
+    "postpack",
+    "posttest",
+    "rehype",
+    "retext",
+    "shrinkwrap",
+    "tslib",
+    "vfile"
+  ]
   // "typescript.implementationsCodeLens.enabled": true
   // "typescript.referencesCodeLens.enabled": true
 }
