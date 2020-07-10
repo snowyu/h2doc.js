@@ -3,7 +3,7 @@
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
     "source.fixAll.eslint": true
@@ -43,7 +43,9 @@
     "listr",
     "parens",
     "postpack",
+    "postrun",
     "posttest",
+    "prerun",
     "rehype",
     "retext",
     "shrinkwrap",
