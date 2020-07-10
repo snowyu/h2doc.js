@@ -1,3 +1,5 @@
+const { off } = require("process");
+
 module.exports = {
   'env': {
     'node': true,
@@ -18,9 +20,9 @@ module.exports = {
   //   '@typescript-eslint',
   // ],
   'rules': {
-    'unicorn/no-abusive-eslint-disable': false,
-    'no-template-curly-in-string': false,
-    'no-multi-assign': false,
-    '@typescript-eslint/no-use-before-define': false,
+    'unicorn/no-abusive-eslint-disable': off,
+    'no-template-curly-in-string': off,
+    'no-multi-assign': off,
+    '@typescript-eslint/no-use-before-define': off,
   },
 };
