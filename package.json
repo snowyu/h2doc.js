@@ -1,6 +1,6 @@
 {
   "name": "h2doc",
-  "description": "prcocess html to a specified format document",
+  "description": "process html to a specified format document",
   "version": "0.0.6",
   "author": "Riceball LEE @snowyu",
   "bin": {
