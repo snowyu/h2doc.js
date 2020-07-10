@@ -1,6 +1,6 @@
 module.exports = {
   "npm": {
-    "publish": false
+    "publish": true
   },
   "git": {
     "commitMessage": "chore(build): release v${version}"
