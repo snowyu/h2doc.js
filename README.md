@@ -18,6 +18,7 @@ Process html to a specified format document.
 
 - Convert html to markdown format
 - Download pictures in the html
+- One directory is a notebook
 - Save markdown and pictures to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
   1. markdown file with the same markdown name folder
