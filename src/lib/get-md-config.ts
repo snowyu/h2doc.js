@@ -111,11 +111,11 @@ export const frontMatterCfgNames = [
 
 export interface IFrontMatterHeadingAsTocConfig {
   /**
-   * Use headings whose depth is at most max depth for generate. defaluts to 3.
+   * Use headings whose depth is at most max depth for generate. defaults to 3.
    */
   maxDepth?: number;
   /**
-   * the first level to generate the directory from the headings of markdown. defaluts to 1.
+   * the first level to generate the directory from the headings of markdown. defaults to 1.
    */
   firstLevel?: number;
 }
