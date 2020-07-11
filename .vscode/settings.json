@@ -37,10 +37,13 @@
   "cSpell.ignoreWords": [
     "arrow",
     "arrow parens",
+    "commandsstop",
+    "extname",
     "globby",
     "laabr",
     "limax",
     "listr",
+    "oclif",
     "parens",
     "postpack",
     "postrun",
@@ -49,8 +52,12 @@
     "rehype",
     "retext",
     "serv",
+    "setext",
     "shrinkwrap",
+    "strikethrough",
+    "tocstop",
     "tslib",
+    "usagestop",
     "vfile"
   ]
   // "typescript.implementationsCodeLens.enabled": true
