@@ -1,6 +1,6 @@
 # h2doc
 
-Prcocess html to a specified format document.
+Process html to a specified format document.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/h2doc.svg)](https://npmjs.org/package/h2doc)
@@ -18,7 +18,7 @@ Prcocess html to a specified format document.
 
 - Save markdown and pics to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
-  1. markdown file with the same makrdown name folder
+  1. markdown file with the same markdown name folder
      - markdown file: `${folder}/${title}.md`
      - markdown assets folder: `${folder}/${title}/`
      - markdown assets base file name: `${assetBaseName}`
@@ -26,7 +26,7 @@ Prcocess html to a specified format document.
      - markdown file: `${folder}/${title}/index.md`
      - markdown assets folder: `${folder}/${title}/`
      - markdown assets base file name: `${assetBaseName}`
-  - you can customize by youself
+  - you can customize by yourself
 
 * `folder`: the relative to `root` directory (coming from Joplin Web Clipper)
 * `title`: (come from Joplin Web Clipper)
@@ -53,7 +53,7 @@ USAGE
 ```
 <!-- usagestop -->
 
-## Configuaration
+## Configuration
 
 The config file name could be `.md-config.(yaml|json)` or `md-config.(yaml|json)`.
 
@@ -163,7 +163,7 @@ USAGE
   $ h2doc server [DIR]
 
 ARGUMENTS
-  DIR  which folder to save
+  DIR  which folder to save. You must create a sub-directory in the folder
 
 OPTIONS
   -h, --help       show CLI help
