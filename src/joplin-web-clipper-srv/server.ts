@@ -1,7 +1,7 @@
 import Hapi, { ServerOptions } from '@hapi/hapi';
 import plgPulse from 'hapi-pulse';
 import laabr from 'laabr';
-import api from './api';
+import { createApi } from './api';
 
 export interface IServerOptions extends ServerOptions {
   timeout?: number;
@@ -22,6 +22,7 @@ export async function createJoplinWebClipperServer(
   const timeout = options.timeout;
   delete options.timeout;
   const server = Hapi.server(options);
+  const api = await createApi();
   if (typeof timeout === 'number') options.timeout = timeout;
 
   // hapi plugin to gracefully stop your hapi server
