@@ -7,7 +7,7 @@ import {
   listTags,
   saveTags,
   tagsConfig,
-  TagsFileName
+  TagsFileName,
 } from '../../lib/list-tags';
 
 export default class Tags extends Command {
