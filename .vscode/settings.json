@@ -48,6 +48,7 @@
     "prerun",
     "rehype",
     "retext",
+    "serv",
     "shrinkwrap",
     "tslib",
     "vfile"
