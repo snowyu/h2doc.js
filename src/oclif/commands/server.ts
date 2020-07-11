@@ -6,7 +6,7 @@ import { getConfig, setConfig } from '../../lib/get-md-config';
 export default class Server extends Command {
   static description = `The Joplin Web Clipper Server to save markdown and images
   `;
-  static aliases = ['default', 'srv', 'svr'];
+  static aliases = ['default', 'srv', 'svr', 'serv'];
 
   static flags = {
     help: flags.help({ char: 'h' }),
