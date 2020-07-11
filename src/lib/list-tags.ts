@@ -25,7 +25,7 @@ export async function saveTags(
     content = JSON.stringify(tags, undefined, 2);
   } else {
     content = yaml.safeDump(tags);
-    filepath = path.replaceExt(filepath, 'yaml');
+    filepath = path.replaceExt(filepath, '.yaml');
   }
   await writeFile(filepath, content);
 }

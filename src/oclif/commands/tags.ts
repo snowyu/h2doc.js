@@ -2,11 +2,12 @@ import { color } from '@oclif/color';
 import { Command, flags } from '@oclif/command';
 import { cli } from 'cli-ux';
 import path from 'path';
+import { getConfig, setConfig } from '../../lib/get-md-config';
 import {
   listTags,
   saveTags,
   tagsConfig,
-  TagsFileName,
+  TagsFileName
 } from '../../lib/list-tags';
 
 export default class Tags extends Command {
@@ -48,14 +49,15 @@ export default class Tags extends Command {
       name: 'folder',
       description:
         'the folder to collect tags, defaults to the current directory',
-      default: '.',
-      required: true,
     },
   ];
 
   async run() {
     const { args, flags } = this.parse(Tags);
-    const dir: string = args.folder;
+    let dir: string = args.folder;
+    if (dir) await setConfig({ output: { root: dir } });
+    const conf = await getConfig();
+    if (!dir) dir = conf.output.root;
     let content: string[] | undefined;
     if (!flags.skip) {
       cli.action.start(`load the cache from: "${dir}"`);
