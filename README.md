@@ -48,7 +48,7 @@ $ npm install -g h2doc
 $ h2doc COMMAND
 running command...
 $ h2doc (-v|--version|version)
-h2doc/0.1.0-alpha.1 linux-x64 node-v12.18.2
+h2doc/0.1.0-alpha.2 linux-x64 node-v12.18.2
 $ h2doc --help [COMMAND]
 USAGE
   $ h2doc COMMAND
@@ -115,7 +115,7 @@ frontMatter: # whether use front matter(insert into markdown).
 * [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
 * [`h2doc help [COMMAND]`](#h2doc-help-command)
 * [`h2doc server [DIR]`](#h2doc-server-dir)
-* [`h2doc tags FOLDER`](#h2doc-tags-folder)
+* [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -166,7 +166,7 @@ USAGE
   $ h2doc server [DIR]
 
 ARGUMENTS
-  DIR  which folder to save. You must create a sub-directory in the folder
+  DIR  which folder to save
 
 OPTIONS
   -h, --help       show CLI help
@@ -183,18 +183,18 @@ ALIASES
   $ h2doc serv
 ```
 
-_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.1/src/oclif/commands/server.ts)_
+_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.2/src/oclif/commands/server.ts)_
 
-## `h2doc tags FOLDER`
+## `h2doc tags [FOLDER]`
 
 collect all tags from the front-matter in the folder and save to file
 
 ```
 USAGE
-  $ h2doc tags FOLDER
+  $ h2doc tags [FOLDER]
 
 ARGUMENTS
-  FOLDER  [default: .] the folder to collect tags, defaults to the current directory
+  FOLDER  the folder to collect tags, defaults to the current directory
 
 OPTIONS
   -c, --cache=cache       [default: .md-tags.yaml] cache all the tags in the folder to the file
@@ -212,5 +212,5 @@ OPTIONS
   --sort=sort             property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.1/src/oclif/commands/tags.ts)_
+_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.2/src/oclif/commands/tags.ts)_
 <!-- commandsstop -->

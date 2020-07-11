@@ -1,7 +1,7 @@
 {
   "name": "h2doc",
   "description": "process html to a specified format document",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "author": "Riceball LEE @snowyu",
   "bin": {
     "h2doc": "./bin/run"
