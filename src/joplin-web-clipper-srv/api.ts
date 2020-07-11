@@ -1,6 +1,7 @@
 import { Request, ResponseToolkit } from '@hapi/hapi';
 import OpenAPIBackend, { Context } from 'openapi-backend';
 import path from 'path';
+import { getConfigValue } from '../lib/get-md-config';
 import { htmlToMarkdown, IInputOptions } from '../lib/html-to-markdown';
 import { getFolders } from '../lib/list-dirs';
 import { getTags } from '../lib/list-tags';
@@ -13,11 +14,12 @@ const api = new OpenAPIBackend({
 api.register({
   async listFolders(c: Context, req: Request, h: ResponseToolkit) {
     const dirs = await getFolders();
+    const root = (await getConfigValue('output.root')) as string;
 
     const result = dirs.map(dir => {
       return {
         id: dir,
-        title: dir,
+        title: path.relative(root, dir),
       };
     });
     req.log('read', result);
@@ -65,7 +67,7 @@ api.register({
 //   return authorized;
 // });
 
-// initalize the backend
+// initialize the backend
 api.init();
 
 export default api;
