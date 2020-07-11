@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { defaultsDeep, uniq as unique } from 'lodash';
+import { defaultsDeep, get, uniq as unique } from 'lodash';
 import os from 'os';
 import path from 'path';
 import loadConfig from './load-config';
@@ -182,3 +182,8 @@ export async function getConfig(config: any = {}) {
 }
 
 export const setConfig = getConfig;
+
+export async function getConfigValue(name: string) {
+  const conf = await getConfig();
+  return get(conf, name);
+}
