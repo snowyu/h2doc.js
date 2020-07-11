@@ -16,7 +16,9 @@ Process html to a specified format document.
 
 # Features
 
-- Save markdown and pics to the current(specified) folder(`root`)
+- Convert html to markdown format
+- Download pictures in the html
+- Save markdown and pictures to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
   1. markdown file with the same markdown name folder
      - markdown file: `${folder}/${title}.md`
