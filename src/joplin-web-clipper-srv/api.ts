@@ -16,11 +16,12 @@ export async function createApi() {
     async listFolders(c: Context, req: Request, h: ResponseToolkit) {
       const dirs = await getFolders();
       const root = (await getConfigValue('output.root')) as string;
+      dirs.unshift(root);
 
       const result = dirs.map(dir => {
         return {
           id: dir,
-          title: path.relative(root, dir),
+          title: '/' + path.relative(root, dir),
         };
       });
       req.log('read', result);
