@@ -14,7 +14,11 @@ export const tagsConfig = new loadConfig({
   file: [TagsFileName],
 });
 
-export async function saveTags(
+export async function saveTags(tags: string[], dir: string) {
+  return saveTagsTo(tags, path.resolve(dir, TagsFileName));
+}
+
+export async function saveTagsTo(
   tags: string[],
   filepath: string = TagsFileName
 ) {
@@ -79,7 +83,7 @@ export async function getTags(
   if (content === undefined) {
     content = await listTags(dir);
     if (write && content.length) {
-      await saveTags(content, path.join(dir, TagsFileName));
+      await saveTagsTo(content, path.join(dir, TagsFileName));
     }
   }
   return content;
