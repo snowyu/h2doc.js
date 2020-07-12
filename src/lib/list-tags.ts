@@ -51,23 +51,35 @@ export async function listTags(aPath: string) {
   return [...result];
 }
 
-export async function getTags() {
-  const conf = await getConfig();
-  // const filepath = path.resolve(conf.output.root, TagsFileName);
-  let content;
-  const dir = conf.output.root;
-  try {
-    content = await tagsConfig.load(dir);
-    if (Array.isArray(content)) {
-      content = [...new Set<string>(content)];
-    } else {
-      content = [];
-    }
-  } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
+export interface ITagsOptions {
+  skip?: boolean;
+  write?: boolean;
+}
+
+export async function getTags(
+  dir: string | undefined = undefined,
+  { skip = false, write = true }: ITagsOptions = {}
+) {
+  let content!: string[];
+  if (!dir) {
+    const conf = await getConfig();
+    dir = conf.output.root;
   }
+  if (skip)
+    try {
+      content = await tagsConfig.load(dir);
+      if (Array.isArray(content)) {
+        content = [...new Set<string>(content)];
+      } else {
+        content = [];
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
   if (content === undefined) {
     content = await listTags(dir);
+  }
+  if (write && content) {
     await saveTags(content, path.join(dir, TagsFileName));
   }
   return content;
