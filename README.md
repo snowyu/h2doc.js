@@ -8,11 +8,18 @@ Process html to a specified format document(markdown currently), build-in Joplin
 [![License](https://img.shields.io/npm/l/h2doc.svg)](https://github.com/snowyu/h2doc/blob/master/package.json)
 
 <!-- toc -->
-* [h2doc](#h2doc)
-* [Features](#features)
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [h2doc](#h2doc)
+- [Features](#features)
+- [Usage](#usage)
+  - [Configuration](#configuration)
+- [.md-config.yaml](#md-configyaml)
+- [Commands](#commands)
+  - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+  - [`h2doc help [COMMAND]`](#h2doc-help-command)
+  - [`h2doc server [DIR]`](#h2doc-server-dir)
+  - [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
+  <!-- tocstop -->
 
 # Features
 
@@ -33,18 +40,19 @@ Process html to a specified format document(markdown currently), build-in Joplin
 
 Supported variables and functions:
 
-* `folder`: the relative to `root` directory (coming from Joplin Web Clipper)
-* `title`: (come from Joplin Web Clipper)
-* `assetBaseName`: the name should not include the `extname`.
-* `date`: the ISO format date time.
-* `index`: the index number of asset.
-* `slug` : the smart slug of the title.
-* `shortid()`: return the short unique id.
-* `toSlug(str)`: convert the str to a smart slug.
+- `folder`: the relative to `root` directory (coming from Joplin Web Clipper)
+- `title`: (come from Joplin Web Clipper)
+- `assetBaseName`: the name should not include the `extname`.
+- `date`: the ISO format date time.
+- `index`: the index number of asset.
+- `slug` : the smart slug of the title.
+- `shortid()`: return the short unique id.
+- `toSlug(str)`: convert the str to a smart slug.
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g h2doc
 $ h2doc COMMAND
@@ -56,6 +64,7 @@ USAGE
   $ h2doc COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 ## Configuration
@@ -64,11 +73,12 @@ The config file name could be `.md-config.(yaml|json)` or `md-config.(yaml|json)
 
 The config file search order:
 
-1. ./.md-config.(yaml|json)
-2. ~/.md-config.(yaml|json)
-3. \$APP/config/.md-config.(yaml|json)
+1. the current working(`root`) directory
+2. the user home directory
+3. the application `config` directory
 
 ````yml
+# .md-config.yaml
 output:
   root: . # the root folder, defaults to current working directory.
   exclude:
@@ -114,10 +124,11 @@ frontMatter: # whether use front matter(insert into markdown).
 # Commands
 
 <!-- commands -->
-* [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-* [`h2doc help [COMMAND]`](#h2doc-help-command)
-* [`h2doc server [DIR]`](#h2doc-server-dir)
-* [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
+
+- [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+- [`h2doc help [COMMAND]`](#h2doc-help-command)
+- [`h2doc server [DIR]`](#h2doc-server-dir)
+- [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -215,4 +226,5 @@ OPTIONS
 ```
 
 _See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.3/src/oclif/commands/tags.ts)_
+
 <!-- commandsstop -->
