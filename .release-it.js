@@ -12,7 +12,7 @@ module.exports = {
     "assets": ["dist/**/*.gz"]
   },
   "hooks": {
-    "before:init": ["npm test", "sudo rm -fr tmp dist"],
+    "before:init": ["sudo rm -fr tmp dist", "npm test"],
     "after:bump": [
       // "npx auto-changelog -p",
       "npm run build",
