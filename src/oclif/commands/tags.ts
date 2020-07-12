@@ -1,7 +1,6 @@
 import { color } from '@oclif/color';
 import { Command, flags } from '@oclif/command';
 import { cli } from 'cli-ux';
-import path from 'path';
 import { getConfig, setConfig } from '../../lib/get-md-config';
 import {
   listTags,
@@ -77,7 +76,7 @@ export default class Tags extends Command {
       cli.action.stop();
       if (flags.write || (content.length && !flags.skip)) {
         cli.action.start('save tags to cache');
-        await saveTags(content, path.join(dir, TagsFileName));
+        await saveTags(content, dir);
         cli.action.stop();
       }
     }
