@@ -1,6 +1,6 @@
 # h2doc
 
-Process html to a specified format document.
+Process html to a specified format document(markdown currently), build-in Joplin Web Clipper Server for [Joplin Web Clipper](https://joplinapp.org/clipper/)
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/h2doc.svg)](https://npmjs.org/package/h2doc)
@@ -30,6 +30,8 @@ Process html to a specified format document.
      - markdown assets folder: `${folder}/${title}/`
      - markdown assets base file name: `${assetBaseName}`
   - you can customize by yourself
+
+Supported variables and functions:
 
 * `folder`: the relative to `root` directory (coming from Joplin Web Clipper)
 * `title`: (come from Joplin Web Clipper)
