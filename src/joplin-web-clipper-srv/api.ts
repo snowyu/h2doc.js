@@ -1,3 +1,4 @@
+import Debug from 'debug';
 import { Request, ResponseToolkit } from '@hapi/hapi';
 import OpenAPIBackend, { Context } from 'openapi-backend';
 import path from 'path';
@@ -5,6 +6,8 @@ import { getConfigValue } from '../lib/get-md-config';
 import { htmlToMarkdown, IInputOptions } from '../lib/html-to-markdown';
 import { getFolders } from '../lib/list-dirs';
 import { getTags } from '../lib/list-tags';
+
+const debug = Debug('h2doc:api');
 
 // create api with your definition file or object
 export async function createApi() {
@@ -24,10 +27,12 @@ export async function createApi() {
           title: '/' + path.relative(root, dir),
         };
       });
+      debug('listFolders:', result);
       return h.response(result);
     },
     async listTags(c: Context, req: Request, h: ResponseToolkit) {
       const tags = await getTags();
+      debug('listTags:', tags);
 
       return h.response(
         tags.map(id => ({
@@ -46,6 +51,7 @@ export async function createApi() {
         tags: body.tags ? body.tags.split(',') : '',
         url: body.source_url,
       };
+      debug('createNote on:', body?.title);
       await htmlToMarkdown(input);
       return h.response(body);
     },
