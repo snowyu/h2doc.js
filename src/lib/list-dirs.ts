@@ -23,7 +23,10 @@ export async function listDirs({
       deep,
     })
   )
-    .filter(p => !(isFile(p + '.md') || isFile(p + '.markdown')))
+    .filter(
+      p =>
+        !(isFile(p + '.md') || isFile(p + '.markdown') || isFile(p + '.html'))
+    )
     .sort();
   return result;
 }
