@@ -9,7 +9,7 @@ module.exports = {
   },
   "github": {
     "release": true,
-    "assets": ["dist/**/*.gz"]
+    "assets": ["dist/**/*.{gz,deb,exe}"]
   },
   "hooks": {
     "before:init": ["sudo rm -fr tmp dist", "npm test"],
