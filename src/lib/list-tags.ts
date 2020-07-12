@@ -78,9 +78,9 @@ export async function getTags(
     }
   if (content === undefined) {
     content = await listTags(dir);
-  }
-  if (write && content) {
-    await saveTags(content, path.join(dir, TagsFileName));
+    if (write && content.length) {
+      await saveTags(content, path.join(dir, TagsFileName));
+    }
   }
   return content;
 }
