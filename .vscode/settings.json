@@ -51,6 +51,7 @@
     "postpack",
     "postrun",
     "posttest",
+    "prepend",
     "prerun",
     "rehype",
     "retext",
