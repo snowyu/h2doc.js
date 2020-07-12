@@ -24,13 +24,10 @@ export async function createApi() {
           title: '/' + path.relative(root, dir),
         };
       });
-      req.log('read', result);
-
       return h.response(result);
     },
     async listTags(c: Context, req: Request, h: ResponseToolkit) {
       const tags = await getTags();
-      req.log('read', tags);
 
       return h.response(
         tags.map(id => ({
@@ -49,9 +46,7 @@ export async function createApi() {
         tags: body.tags ? body.tags.split(',') : '',
         url: body.source_url,
       };
-      req.log('write', 'before');
       await htmlToMarkdown(input);
-      req.log('write', 'done');
       return h.response(body);
     },
     ping(c: Context, req: Request, h: ResponseToolkit) {
