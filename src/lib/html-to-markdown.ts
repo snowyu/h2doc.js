@@ -22,6 +22,7 @@ import {
 import { getMetadata } from './get-metadata';
 import { getTags, saveTags } from './list-tags';
 import { writeFile } from './write-file';
+import { simpleSlug } from './simple-slug';
 
 // import parseMarkdown from 'front-matter-markdown'
 
@@ -68,10 +69,10 @@ export async function htmlToMarkdown(input: IInputOptions) {
       content = `---\n${fm}---\n\n` + content;
     }
   }
-  if (metadata?.image) assets.add(metadata?.image);
-  if (metadata?.logo) assets.add(metadata?.logo);
-  if (metadata?.audio) assets.add(metadata?.audio);
-  if (metadata?.video) assets.add(metadata?.video);
+  if (metadata?.image) assets.add(metadata.image);
+  if (metadata?.logo) assets.add(metadata.logo);
+  if (metadata?.audio) assets.add(metadata.audio);
+  if (metadata?.video) assets.add(metadata.video);
   const meta = Object.assign({}, metadata, input, conf);
   const imports = getTemplateImports(conf);
   input.content = content;
@@ -96,7 +97,7 @@ async function saveAssets(
   meta: any,
   imports: any
 ) {
-  const assetDir = trimDots(
+  const assetDir = simpleSlug(
     path.resolve(conf.root, template(conf.asset, { imports })(meta))
   );
   await mkdirp(assetDir);
@@ -133,7 +134,7 @@ async function saveAsset(
   meta.extname = extname;
 
   const basename = templated(meta);
-  const filename = trimDots(path.resolve(assetDir, basename + extname));
+  const filename = simpleSlug(path.resolve(assetDir, basename + extname));
   await writeFile(filename, response.rawBody, { encoding: 'binary' });
   return { filename, asset, index };
 }
@@ -154,8 +155,9 @@ async function saveMarkdown(
   meta: any,
   imports: any
 ) {
-  const filename = trimDots(
-    path.resolve(conf.root, template(conf.markdown, { imports })(meta))
+  const root = conf.root;
+  const filename = simpleSlug(
+    path.resolve(root, template(conf.markdown, { imports })(meta))
   );
   const dirname = path.dirname(filename);
   await mkdirp(dirname);
@@ -171,7 +173,7 @@ async function saveMarkdown(
   if (input.tags?.length) {
     const tags = await getTags();
     tags.push(...input.tags);
-    await saveTags(tags);
+    await saveTags(tags, root);
   }
 }
 
@@ -237,18 +239,3 @@ function initTurndownService(conf: ApplicationConfig) {
   }
   return turndownService;
 }
-
-/**
- * trim continue dot char to one.
- * @param s the string to process
- * @return the processed string
- * @example
- *  trimDots('asss...md.') to 'asss.md'
- */
-function trimDots(s: string) {
-  s = s.replace(/[ ?:%!]/g, '-');
-  s = s.replace(/([. \-_+])\1+/g, '$1');
-  s = s.replace(/(^[. \-_+]+)|[. \-_+]+$/g, '');
-  return s;
-}
-// '338e4905a2684ca96e08c7780fc68412'
