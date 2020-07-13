@@ -25,7 +25,8 @@ Process html to a specified format document(markdown currently), build-in Joplin
 
 - Convert html to markdown format
 - Download pictures in the html
-- One directory is a notebook
+- Directory is a notebook
+- Collect and cache the tags from the front-matter of markdown
 - Save markdown and pictures to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
   1. markdown file with the same markdown name folder
