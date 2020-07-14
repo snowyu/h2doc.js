@@ -1,3 +1,5 @@
+import Debug from 'debug';
+
 const metascraper = require('metascraper')([
   require('metascraper-author')(),
   require('metascraper-date')(),
@@ -13,6 +15,8 @@ const metascraper = require('metascraper')([
   // require('metascraper-readability')(),
 ]);
 
+const debug = Debug('h2doc:meta');
+
 import got from 'got';
 // const got = require('got');
 
@@ -22,7 +26,7 @@ export async function getMetadata(targetUrl: string) {
   try {
     metadata = await metascraper({ html, url });
   } catch (e) {
-    console.error('getMetadata error', e);
+    debug('getMetadata error', e);
     metadata = {};
   }
   return metadata;
