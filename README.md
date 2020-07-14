@@ -8,18 +8,12 @@ Process html to a specified format document(markdown currently), build-in Joplin
 [![License](https://img.shields.io/npm/l/h2doc.svg)](https://github.com/snowyu/h2doc/blob/master/package.json)
 
 <!-- toc -->
-
-- [h2doc](#h2doc)
-- [Features](#features)
-- [Usage](#usage)
-  - [Configuration](#configuration)
-- [.md-config.yaml](#md-configyaml)
-- [Commands](#commands)
-  - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-  - [`h2doc help [COMMAND]`](#h2doc-help-command)
-  - [`h2doc server [DIR]`](#h2doc-server-dir)
-  - [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
-  <!-- tocstop -->
+* [h2doc](#h2doc)
+* [Features](#features)
+* [Usage](#usage)
+* [.md-config.yaml](#md-configyaml)
+* [Commands](#commands)
+<!-- tocstop -->
 
 # Features
 
@@ -53,19 +47,17 @@ Supported variables and functions:
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g h2doc
 $ h2doc COMMAND
 running command...
 $ h2doc (-v|--version|version)
-h2doc/0.1.0-alpha.3 linux-x64 node-v12.18.2
+h2doc/0.1.0-alpha.4 linux-x64 node-v12.18.2
 $ h2doc --help [COMMAND]
 USAGE
   $ h2doc COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 ## Configuration
@@ -125,11 +117,10 @@ frontMatter: # whether use front matter(insert into markdown).
 # Commands
 
 <!-- commands -->
-
-- [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-- [`h2doc help [COMMAND]`](#h2doc-help-command)
-- [`h2doc server [DIR]`](#h2doc-server-dir)
-- [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
+* [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+* [`h2doc help [COMMAND]`](#h2doc-help-command)
+* [`h2doc server [DIR]`](#h2doc-server-dir)
+* [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -197,7 +188,7 @@ ALIASES
   $ h2doc serv
 ```
 
-_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.3/src/oclif/commands/server.ts)_
+_See code: [src/oclif/commands/server.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.4/src/oclif/commands/server.ts)_
 
 ## `h2doc tags [FOLDER]`
 
@@ -226,6 +217,5 @@ OPTIONS
   --sort=sort             property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.3/src/oclif/commands/tags.ts)_
-
+_See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.4/src/oclif/commands/tags.ts)_
 <!-- commandsstop -->
