@@ -75,6 +75,7 @@
     "@types/listr": "^0.14.2",
     "@types/lodash": "^4.14.157",
     "@types/node": "12",
+    "@types/shortid": "^0.0.29",
     "ascii-art": "^2.5.0",
     "auto-changelog": "^2.2.0",
     "eslint": "^5.13",
