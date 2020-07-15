@@ -22,4 +22,4 @@ jobs:
         provider: script
         skip_cleanup: true
         script:
-          - sudo npx semantic-release
+          - sudo /home/travis/.cache/yarn semantic-release
