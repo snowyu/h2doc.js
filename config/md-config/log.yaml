@@ -1,0 +1,4 @@
+formats:
+  response: ":time :method :remoteAddress :url :status (:responseTime ms)"
+indent: 2
+colored: true

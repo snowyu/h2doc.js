@@ -33,12 +33,13 @@ export default class Server extends Command {
         ' for ' +
         color.cyanBright('https://joplinapp.org/clipper/')
     );
-    const { args, flags } = this.parse(Server);
+    const { args, flags }: any = this.parse(Server);
     // const { port, host } = flags;
     const { dir } = args;
     if (dir) await setConfig({ output: { root: dir } });
     const conf = await getConfig();
     this.log(`Web Clips will be stored on '${conf.output.root}' folder`);
+    flags.log = conf.log;
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
     this.log(`listening on ${svr.info.uri}`);

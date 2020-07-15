@@ -10,6 +10,7 @@ export interface IServerOptions extends ServerOptions {
   postServerStop?: Function;
   preServerStop?: Function;
   preShutdown?: Function;
+  log?: any;
 }
 
 export async function createJoplinWebClipperServer(
@@ -20,6 +21,21 @@ export async function createJoplinWebClipperServer(
   }
 ) {
   const timeout = options.timeout;
+  const logOptions = Object.assign(
+    {
+      formats: {
+        // onPostStart: 'server.info',
+        response:
+          ':time :method :remoteAddress :url :status (:responseTime ms)',
+        log: false,
+      },
+      // tokens: { start: () => '[start]' },
+      // indent: 2,
+      // colored: true,
+    },
+    options.log
+  );
+  delete options.log;
   delete options.timeout;
   const server = Hapi.server(options);
   const api = await createApi();
@@ -33,15 +49,7 @@ export async function createJoplinWebClipperServer(
 
   await server.register({
     plugin: laabr,
-    options: {
-      formats: {
-        onPostStart: ':time :start :level :message',
-        log: false,
-      },
-      // tokens: { start: () => '[start]' },
-      indent: 0,
-      colored: true,
-    },
+    options: logOptions,
   });
 
   server.route({

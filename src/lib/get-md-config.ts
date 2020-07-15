@@ -23,6 +23,7 @@ export interface ApplicationConfig {
   download?: boolean | IDownloadConfig;
   frontMatter?: boolean | IFrontMatterConfig;
   mimetype?: IMimeTypeConfig;
+  log?: any;
   imgCallback?: (imgNode: HTMLImageElement) => void;
 }
 
