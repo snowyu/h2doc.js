@@ -133,7 +133,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint src --ext .ts",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "prebuild": "sudo rimraf tmp dist",
+    "prebuild": "rimraf tmp dist",
     "build": "oclif-dev pack && oclif-dev pack:win && oclif-dev pack:deb",
     "release": "release-it",
     "test": "jest",
