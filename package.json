@@ -1,7 +1,7 @@
 {
   "name": "h2doc",
   "description": "process html to a specified format document",
-  "version": "0.1.0-alpha.4",
+  "version": "0.0.0-development",
   "author": "Riceball LEE @snowyu",
   "bin": {
     "h2doc": "./bin/run"
@@ -63,6 +63,9 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/github": "^7.0.7",
+    "@semantic-release/release-notes-generator": "^9.0.1",
     "@types/figlet": "^1.2.0",
     "@types/hapi__hapi": "^19.0.3",
     "@types/jest": "^26.0.4",
@@ -81,6 +84,8 @@
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "release-it": "^13.6.5",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.1.1",
     "ts-jest": "^26.1.1",
     "ts-node": "^8",
     "typescript": "^3.9"
@@ -124,11 +129,13 @@
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint src --ext .ts",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "build": "rm -fr dist && oclif-dev pack && oclif-dev pack:win && oclif-dev pack:deb",
+    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prebuild": "sudo rimraf tmp dist",
+    "build": "prepack && oclif-dev pack && oclif-dev pack:win && oclif-dev pack:deb",
     "release": "release-it",
     "test": "jest",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "semantic-release": "semantic-release"
   },
   "prettier": {
     "arrowParens": "avoid",
