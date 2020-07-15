@@ -64,6 +64,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/exec": "^5.0.0",
     "@semantic-release/github": "^7.0.7",
     "@semantic-release/npm": "^7.0.5",
     "@semantic-release/release-notes-generator": "^9.0.1",
@@ -132,7 +133,7 @@
     "posttest": "eslint src --ext .ts",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "prebuild": "sudo rimraf tmp dist",
-    "build": "prepack && oclif-dev pack && oclif-dev pack:win && oclif-dev pack:deb",
+    "build": "oclif-dev pack && oclif-dev pack:win && oclif-dev pack:deb",
     "release": "release-it",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",

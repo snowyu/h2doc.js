@@ -12,6 +12,12 @@ module.exports = {
     '@semantic-release/release-notes-generator',
     '@semantic-release/npm',
     [
+      '@semantic-release/exec',
+      {
+        prepareCmd: 'npm run build', // echo ${nextRelease.version}
+      },
+    ],
+    [
       '@semantic-release/github',
       {
         assets: [['!dist/deb/Packages.gz', 'dist/**/*.{gz,deb,exe}']],
