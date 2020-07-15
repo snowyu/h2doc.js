@@ -51,7 +51,7 @@ export async function createApi() {
         tags: body.tags ? body.tags.split(',') : '',
         url: body.source_url,
       };
-      debug('createNote on:', body?.title);
+      debug('createNote on:', body.parent_id, body?.title);
       await htmlToMarkdown(input);
       return h.response(body);
     },
