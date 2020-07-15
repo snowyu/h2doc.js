@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Debug from 'debug';
 import got from 'got';
 import yaml from 'js-yaml';
 import slug from 'limax';
@@ -26,6 +27,7 @@ import { simpleSlug } from './simple-slug';
 
 // import parseMarkdown from 'front-matter-markdown'
 
+const debug = Debug('h2doc:markdown');
 const GfwMaps = {
   strikethrough,
   tables,
@@ -126,6 +128,7 @@ async function saveAsset(
   let assetBaseName = path.basename(vUrl.pathname);
   const extname = path.extname(assetBaseName);
   assetBaseName = assetBaseName.slice(0, assetBaseName.length - extname.length);
+  debug('get asset:', asset.url);
   const response = await got(asset.url);
   // const contentType = response.headers['content-type']
   // response.rawBody
@@ -135,6 +138,7 @@ async function saveAsset(
 
   const basename = templated(meta);
   const filename = simpleSlug(path.resolve(assetDir, basename + extname));
+  debug('save asset to:', filename);
   await writeFile(filename, response.rawBody, { encoding: 'binary' });
   return { filename, asset, index };
 }
@@ -182,7 +186,7 @@ async function getMetadataEx(
   input: IInputOptions,
   slugConf?: ISlugOptions | string
 ) {
-  let meta = await getMetadata(input.url!);
+  let meta = await getMetadata(input.url!, input.html);
   const isBool = typeof conf === 'boolean';
   const fmCfgNames = isBool ? frontMatterCfgNames : Object.keys(conf);
   if (
@@ -191,7 +195,10 @@ async function getMetadataEx(
   )
     fmCfgNames.push('date');
   meta = pick(meta, fmCfgNames);
-  if (meta.title && input.title) meta.title = input.title;
+  if ((isBool || (conf as IFrontMatterConfig).title) && input.title) {
+    meta.title = input.title;
+  }
+
   if (input.title && (isBool || (conf as IFrontMatterConfig).slug)) {
     meta.slug = toSlug(slugConf, input.title);
   }
