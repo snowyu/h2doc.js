@@ -125,7 +125,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "snowyu/h2doc",
+  "repository": "snowyu/h2doc.js",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint src --ext .ts",
