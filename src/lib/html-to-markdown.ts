@@ -3,10 +3,17 @@ import Debug from 'debug';
 import got from 'got';
 import yaml from 'js-yaml';
 import slug from 'limax';
-import { isNil, omitBy, pick, template, TemplateExecutor } from 'lodash';
+import {
+  isNil,
+  omitBy,
+  pick,
+  template,
+  TemplateExecutor,
+  findIndex,
+} from 'lodash';
 import mkdirp from 'mkdirp';
 import pLimit from 'p-limit';
-import path from 'path';
+import path from 'path.js';
 import shortid from 'shortid';
 import Turndown from 'turndown';
 import { gfw, strikethrough, tables, taskListItems } from 'turndown-plugin-gfm';
@@ -49,10 +56,14 @@ function toSlug(conf: ISlugOptions | undefined | string, value: string) {
 }
 
 function getTemplateImports(conf: ApplicationConfig) {
-  return { shortid, toSlug: toSlug.bind(null, conf.slug) };
+  return {
+    shortid: shortid.generate.bind(shortid),
+    toSlug: toSlug.bind(null, conf.slug),
+  };
 }
 
 export async function htmlToMarkdown(input: IInputOptions) {
+  debug('input.folder', input.folder);
   const conf: ApplicationConfig = await getConfig();
   const assets = new Set<string>();
 
@@ -102,13 +113,41 @@ async function saveAssets(
   const assetDir = simpleSlug(
     path.resolve(conf.root, template(conf.asset, { imports })(meta))
   );
+  debug('assetDir', assetDir);
   await mkdirp(assetDir);
   const limit = pLimit(5);
   const templated = template(conf.assetBaseName, { imports });
-  const assets = srcs.map(asset => ({
-    url: url.resolve(input.url!, asset),
-    src: asset,
-  }));
+  const assets = srcs.map(asset => {
+    const vUrl = url.resolve(input.url!, asset);
+    const filename = path.basename(new url.URL(vUrl).pathname);
+    return {
+      filename,
+      url: vUrl,
+      src: asset,
+    };
+  });
+  assets.forEach((asset, ix, arr) => {
+    if (
+      findIndex(
+        arr,
+        (item, i) => i !== ix && item.filename === asset.filename
+      ) >= 0
+    ) {
+      const extname = path.extname(asset.filename);
+      asset.filename = path.replaceExt(asset.filename, ix + extname);
+      if (
+        findIndex(
+          arr,
+          (item, i) => i !== ix && item.filename === asset.filename
+        ) >= 0
+      ) {
+        asset.filename = path.replaceExt(
+          asset.filename,
+          shortid.generate() + extname
+        );
+      }
+    }
+  });
   const tasks = assets.map((asset, index) =>
     limit(() => saveAsset(asset, index, conf, meta, assetDir, templated))
   );
@@ -117,18 +156,18 @@ async function saveAssets(
 }
 
 async function saveAsset(
-  asset: { url: string; src: string },
+  asset: { url: string; src: string; filename: string },
   index: number,
   conf: IOutputConfig,
   meta: any,
   assetDir: string,
   templated: TemplateExecutor
 ) {
-  const vUrl = new url.URL(asset.url);
-  let assetBaseName = path.basename(vUrl.pathname);
+  // const vUrl = new url.URL(asset.url);
+  let assetBaseName = asset.filename; // path.basename(vUrl.pathname);
   const extname = path.extname(assetBaseName);
   assetBaseName = assetBaseName.slice(0, assetBaseName.length - extname.length);
-  debug('get asset:', asset.url);
+  debug('asset get:', asset.url);
   const response = await got(asset.url);
   // const contentType = response.headers['content-type']
   // response.rawBody
@@ -138,8 +177,10 @@ async function saveAsset(
 
   const basename = templated(meta);
   const filename = simpleSlug(path.resolve(assetDir, basename + extname));
-  debug('save asset to:', filename);
-  await writeFile(filename, response.rawBody, { encoding: 'binary' });
+  debug('asset save:', path.relative(conf.root, filename));
+  await writeFile(filename, response.rawBody, {
+    encoding: 'binary',
+  });
   return { filename, asset, index };
 }
 
@@ -164,6 +205,7 @@ async function saveMarkdown(
     path.resolve(root, template(conf.markdown, { imports })(meta))
   );
   const dirname = path.dirname(filename);
+  debug('markdownDir', dirname);
   await mkdirp(dirname);
   let content = input.content!;
   if (meta.assets) {
@@ -173,7 +215,7 @@ async function saveMarkdown(
       content = content.replace(reg, `${relativeName}`);
     });
   }
-  await writeFile(filename, content, 'utf8');
+  await writeFile(filename, content);
   if (input.tags?.length) {
     const tags = await getTags();
     tags.push(...input.tags);
