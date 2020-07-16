@@ -7,10 +7,6 @@ node_js:
 cache: yarn
 
 script:
-  - which node
-  - which npm
-  - which npx
-  - which yarn
   - ./bin/run --version
   - ./bin/run --help
   - yarn run test
@@ -23,6 +19,10 @@ jobs:
       # Advanced: optionally overwrite your default `script` step to skip the tests
       script: skip
       before_deploy:
+        - which node
+        - which npm
+        - which npx
+        - which yarn
         - sudo apt-get update
         - sudo apt-get -y install bzip2 p7zip-full build-essential fakeroot devscripts nsis
       deploy:
