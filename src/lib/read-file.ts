@@ -3,9 +3,9 @@ import fs from 'fs';
 export async function readFile(
   filepath: string,
   options?:
-    | string
+    | BufferEncoding
     | {
-        encoding: string;
+        encoding: BufferEncoding;
         flag?: string;
       }
 ) {

@@ -4,7 +4,7 @@ import fs from 'fs';
 import { URL } from 'url';
 
 interface IWriteFileOptions {
-  encoding?: string | null | undefined;
+  encoding?: BufferEncoding | null | undefined;
   mode?: string | number | undefined;
   flag?: string | undefined;
   // overwrite?: boolean;
