@@ -18,17 +18,21 @@ const metascraper = require('metascraper')([
 const debug = Debug('h2doc:meta');
 
 import got from 'got';
-// const got = require('got');
 
-export async function getMetadata(targetUrl: string, _aHtml?: string) {
-  const { body: html, url } = await got(targetUrl);
+export async function getMetadata(url: string, html?: string) {
+  if (!html) {
+    const response = await got(url);
+    html = response.body;
+    url = response.url;
+  }
+  // const url = targetUrl;
   debug('url:', url);
   let metadata;
   try {
     metadata = await metascraper({ html, url });
   } catch (e) {
     debug('getMetadata error:', e);
-    metadata = { url: targetUrl };
+    metadata = { url };
   }
   debug('data:', metadata);
   return metadata;
