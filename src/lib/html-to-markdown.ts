@@ -49,6 +49,7 @@ export interface IInputOptions {
   url?: string;
   tags?: string | string[];
   content?: string;
+  htmlType?: 'simplifiedPageHtml' | 'completePageHtml' | 'selectedHtml';
 }
 
 function toSlug(conf: ISlugOptions | undefined | string, value: string) {
@@ -228,7 +229,8 @@ async function getMetadataEx(
   input: IInputOptions,
   slugConf?: ISlugOptions | string
 ) {
-  let meta = await getMetadata(input.url!, input.html);
+  const html = input.htmlType === 'completePageHtml' ? input.html : undefined;
+  let meta = await getMetadata(input.url!, html);
   const isBool = typeof conf === 'boolean';
   const fmCfgNames = isBool ? frontMatterCfgNames : Object.keys(conf);
   if (

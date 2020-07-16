@@ -51,6 +51,13 @@ export async function createApi() {
         tags: body.tags ? body.tags.split(',') : '',
         url: body.source_url,
       };
+      const htmlType = body.source_command;
+      if (htmlType) {
+        // htmlType.preProcessFor = 'html' | 'markdown'
+        input.htmlType =
+          typeof htmlType === 'string' ? htmlType : htmlType.name;
+      }
+
       debug('createNote on:', body.parent_id, body?.title);
       await htmlToMarkdown(input);
       return h.response(body);
