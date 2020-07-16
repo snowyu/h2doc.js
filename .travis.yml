@@ -18,6 +18,9 @@ jobs:
       node_js: lts/*
       # Advanced: optionally overwrite your default `script` step to skip the tests
       script: skip
+      before_deploy:
+        - sudo apt-get update
+        - sudo apt-get -y install bzip2 p7zip-full build-essential fakeroot devscripts nsis
       deploy:
         provider: script
         skip_cleanup: true
