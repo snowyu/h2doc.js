@@ -25,9 +25,9 @@ jobs:
         - which yarn
         - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
         - sudo apt-get update
-        - sudo apt-get -y install nodejs bzip2 p7zip-full build-essential fakeroot devscripts nsis
+        - sudo apt-get -y install nodejs bzip2 p7zip-full fakeroot devscripts nsis
       deploy:
         provider: script
         skip_cleanup: true
         script:
-          - sudo -E -i -H $PWD/node_modules/.bin/semantic-release
+          - fakeroot npx semantic-release
