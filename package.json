@@ -134,7 +134,7 @@
     "posttest": "eslint src --ext .ts",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "prebuild": "rimraf tmp dist",
-    "build": "sudo -s -H -u travis yarn oclif-dev pack:deb && oclif-dev pack && oclif-dev pack:win",
+    "build": "oclif-dev pack:deb && oclif-dev pack && oclif-dev pack:win",
     "release": "release-it",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
