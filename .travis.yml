@@ -30,4 +30,4 @@ jobs:
         provider: script
         skip_cleanup: true
         script:
-          - sudo -i $PWD/node_modules/.bin/npx semantic-release
+          - sudo -i -H $PWD/node_modules/.bin/semantic-release
