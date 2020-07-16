@@ -9,6 +9,7 @@ cache: yarn
 script:
   - which node
   - which npm
+  - which npx
   - which yarn
   - ./bin/run --version
   - ./bin/run --help
