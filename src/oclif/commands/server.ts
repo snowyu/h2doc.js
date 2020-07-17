@@ -21,6 +21,11 @@ export default class Server extends Command {
       description: 'the port to serve',
       default: 41184,
     }),
+    timeout: flags.integer({
+      char: 't',
+      description: 'the timeout to serve',
+      default: 15000,
+    }),
     // flag with no value (-f, --force)
     // force: flags.boolean({ char: 'f' }),
   };
