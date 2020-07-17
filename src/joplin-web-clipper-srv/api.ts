@@ -58,8 +58,9 @@ export async function createApi() {
           typeof htmlType === 'string' ? htmlType : htmlType.name;
       }
 
-      debug('createNote on:', body.parent_id, body?.title);
+      debug('note creating:', body.parent_id, body?.title);
       await htmlToMarkdown(input);
+      debug('note created');
       return h.response(body);
     },
     ping(c: Context, req: Request, h: ResponseToolkit) {
