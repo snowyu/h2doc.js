@@ -64,9 +64,25 @@ function getTemplateImports(conf: ApplicationConfig) {
 }
 
 export async function htmlToMarkdown(input: IInputOptions) {
-  debug('input.folder', input.folder);
   const conf: ApplicationConfig = await getConfig();
   const assets = new Set<string>();
+  if (typeof input.tags === 'string') input.tags = [input.tags];
+  if (input.tags) {
+    const vTagFolder = input.tags[0];
+    if (
+      vTagFolder &&
+      (vTagFolder[0] === '/' ||
+        (vTagFolder[0] === '.' && vTagFolder[1] === '/'))
+    ) {
+      input.folder =
+        vTagFolder[0] === '/'
+          ? '.' + vTagFolder
+          : path.join(input.folder, vTagFolder);
+      input.tags.splice(0, 1);
+    }
+  }
+
+  debug('real folder', input.folder);
 
   conf.imgCallback = (node: HTMLImageElement) => {
     const src = node?.getAttribute('src');
@@ -99,7 +115,9 @@ export async function htmlToMarkdown(input: IInputOptions) {
       imports
     );
     meta.assets = savedAssets;
+    debug('assets saved');
   }
+  debug('markdown saving');
   await saveMarkdown(conf.output!, input, meta, imports);
   return { content, assets: Array.from(assets), metadata, conf, input };
 }
@@ -114,7 +132,7 @@ async function saveAssets(
   const assetDir = simpleSlug(
     path.resolve(conf.root, template(conf.asset, { imports })(meta))
   );
-  debug('assetDir', assetDir);
+  debug('assets Dir', assetDir);
   await mkdirp(assetDir);
   const limit = pLimit(5);
   const templated = template(conf.assetBaseName, { imports });
@@ -122,7 +140,7 @@ async function saveAssets(
     const vUrl = url.resolve(input.url!, asset);
     const filename = path.basename(new url.URL(vUrl).pathname);
     return {
-      filename,
+      filename: path.basename(decodeURIComponent(filename)),
       url: vUrl,
       src: asset,
     };
@@ -152,7 +170,7 @@ async function saveAssets(
   const tasks = assets.map((asset, index) =>
     limit(() => saveAsset(asset, index, conf, meta, assetDir, templated))
   );
-  const result = await Promise.all(tasks);
+  const result = (await Promise.all(tasks)).filter(Boolean);
   return result;
 }
 
@@ -169,7 +187,13 @@ async function saveAsset(
   const extname = path.extname(assetBaseName);
   assetBaseName = assetBaseName.slice(0, assetBaseName.length - extname.length);
   debug('asset get:', asset.url);
-  const response = await got(asset.url);
+  let response;
+  try {
+    response = await got(asset.url);
+  } catch (err) {
+    debug('asset got err:', err.message, asset.url);
+    return;
+  }
   // const contentType = response.headers['content-type']
   // response.rawBody
   meta.index = index;
@@ -216,6 +240,7 @@ async function saveMarkdown(
       content = content.replace(reg, `${relativeName}`);
     });
   }
+  debug('save', filename);
   await writeFile(filename, content);
   if (input.tags?.length) {
     const tags = await getTags();
