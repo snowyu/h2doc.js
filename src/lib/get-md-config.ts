@@ -132,6 +132,24 @@ export interface IMimeTypeConfig {
 }
 
 let gConfig;
+let gMimetype;
+
+export function getDownloadMimetype(download?: boolean | IDownloadConfig) {
+  if (!download) return;
+  let result: string[];
+  if (typeof download === 'object' && download.type) {
+    if (typeof download.type === 'string') {
+      result = [download.type];
+    } else {
+      result = download.type;
+    }
+  } else {
+    result = ['media', 'document', 'archive'];
+  }
+  const mimetype = gMimetype || defaultMimetype;
+  result = result.map(m => mimetype[m] || m);
+  return result;
+}
 
 function initOutConfig(conf: ApplicationConfig) {
   let out = conf.output;
@@ -179,6 +197,7 @@ export async function getConfig(config: any = {}) {
     config = defaultsDeep(config, ...vConfigs);
     gConfig = config;
   }
+  gMimetype = config.mimetype = config.mimetype || defaultMimetype;
   return initOutConfig(config);
 }
 
@@ -188,3 +207,40 @@ export async function getConfigValue(name: string) {
   const conf = await getConfig();
   return get(conf, name);
 }
+
+export const defaultMimetype = {
+  image: ['image/*'],
+  video: ['video/*'],
+  audio: ['audio/*'],
+  media: [
+    ['video/*'],
+    ['audio/*'],
+    'application/ogg',
+    'application/x-shockwave-flash',
+  ],
+  document: [
+    'text/*',
+    'application/pdf',
+    'application/epub+zip',
+    'application/msword',
+    'application/rtf',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.visio',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats*',
+    'application/vnd.oasis.opendocument*',
+    'application/json',
+    'application/ld+json',
+    'application/xhtml+xml',
+  ],
+  archive: [
+    'application/x-bzip',
+    'application/x-bzip2',
+    'application/gzip',
+    'application/vnd.rar',
+    'application/x-tar',
+    'application/zip',
+    'application/x-7z-compressed',
+  ],
+  font: ['font/*', 'application/vnd.ms-fontobject'],
+};

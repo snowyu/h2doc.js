@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Debug from 'debug';
-import got from 'got';
+import FileType from 'file-type';
+import got, { Response } from 'got';
 import yaml from 'js-yaml';
 import slug from 'limax';
 import {
@@ -11,6 +12,7 @@ import {
   TemplateExecutor,
   findIndex,
 } from 'lodash';
+import mimetype from 'mime-type/with-db';
 import mkdirp from 'mkdirp';
 import pLimit from 'p-limit';
 import path from 'path.js';
@@ -26,6 +28,7 @@ import {
   IFrontMatterConfig,
   IOutputConfig,
   ISlugOptions,
+  getDownloadMimetype,
 } from './get-md-config';
 import { getMetadata } from './get-metadata';
 import { getTags, saveTags } from './list-tags';
@@ -82,7 +85,7 @@ export async function htmlToMarkdown(input: IInputOptions) {
     }
   }
 
-  debug('real folder', input.folder);
+  debug('save to folder', input.folder);
 
   conf.imgCallback = (node: HTMLImageElement) => {
     const src = node?.getAttribute('src');
@@ -106,14 +109,16 @@ export async function htmlToMarkdown(input: IInputOptions) {
   const meta = Object.assign({}, metadata, input, conf);
   const imports = getTemplateImports(conf);
   input.content = content;
-  if (conf.download) {
-    const savedAssets = await saveAssets(
-      conf.output!,
+  const downloadMimetype = getDownloadMimetype(conf.download);
+  if (downloadMimetype && downloadMimetype.length) {
+    meta.mimetype = downloadMimetype;
+    const savedAssets = await saveAssets({
+      conf: conf.output!,
       input,
-      Array.from(assets),
+      urls: Array.from(assets),
       meta,
-      imports
-    );
+      imports,
+    });
     meta.assets = savedAssets;
     debug('assets saved');
   }
@@ -122,13 +127,19 @@ export async function htmlToMarkdown(input: IInputOptions) {
   return { content, assets: Array.from(assets), metadata, conf, input };
 }
 
-async function saveAssets(
-  conf: IOutputConfig,
-  input: IInputOptions,
-  srcs: string[],
-  meta: any,
-  imports: any
-) {
+async function saveAssets({
+  conf,
+  input,
+  urls,
+  meta,
+  imports,
+}: {
+  conf: IOutputConfig;
+  input: IInputOptions;
+  urls: string[];
+  meta: any;
+  imports: any;
+}) {
   const assetDir = simpleSlug(
     path.resolve(conf.root, template(conf.asset, { imports })(meta))
   );
@@ -136,11 +147,13 @@ async function saveAssets(
   await mkdirp(assetDir);
   const limit = pLimit(5);
   const templated = template(conf.assetBaseName, { imports });
-  const assets = srcs.map(asset => {
+  const assets = urls.map(asset => {
     const vUrl = url.resolve(input.url!, asset);
-    const filename = path.basename(new url.URL(vUrl).pathname);
+    const filename = path.basename(
+      decodeURIComponent(path.basename(new url.URL(vUrl).pathname))
+    );
     return {
-      filename: path.basename(decodeURIComponent(filename)),
+      filename,
       url: vUrl,
       src: asset,
     };
@@ -184,16 +197,39 @@ async function saveAsset(
 ) {
   // const vUrl = new url.URL(asset.url);
   let assetBaseName = asset.filename; // path.basename(vUrl.pathname);
-  const extname = path.extname(assetBaseName);
+  let extname = path.extname(assetBaseName);
   assetBaseName = assetBaseName.slice(0, assetBaseName.length - extname.length);
   debug('asset get:', asset.url);
-  let response;
+  let response: Response;
+  let contentType: string | undefined;
   try {
     response = await got(asset.url);
+    contentType = response.headers['content-type'];
   } catch (err) {
     debug('asset got err:', err.message, asset.url);
     return;
   }
+
+  if (!contentType) {
+    const vFiletype = await FileType.fromBuffer(response.rawBody);
+    if (vFiletype) contentType = vFiletype.mime;
+  }
+
+  if (contentType) {
+    const vMime = mimetype[contentType];
+    if (vMime) {
+      const vExts = (vMime as any).extensions as string[];
+      vExts.forEach(v => {
+        v = '.' + v + '.';
+        const i = assetBaseName.indexOf(v);
+        if (i !== -1) assetBaseName = assetBaseName.split(v).join('.');
+      });
+      if (vExts.length && vExts.indexOf(extname) === -1) {
+        extname = '.' + getShortExtension(vExts);
+      }
+    }
+  }
+
   // const contentType = response.headers['content-type']
   // response.rawBody
   meta.index = index;
@@ -314,4 +350,15 @@ function initTurndownService(conf: ApplicationConfig) {
     }
   }
   return turndownService;
+}
+
+function getShortExtension(exts: string[]) {
+  let result = exts[0];
+  for (const ext of exts) {
+    if (ext.length <= 3) {
+      result = ext;
+      break;
+    }
+  }
+  return result;
 }
