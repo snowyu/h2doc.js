@@ -8,12 +8,18 @@ Process html to a specified format document(markdown currently), build-in Joplin
 [![License](https://img.shields.io/npm/l/h2doc.svg)](https://github.com/snowyu/h2doc/blob/master/package.json)
 
 <!-- toc -->
-* [h2doc](#h2doc)
-* [Features](#features)
-* [Usage](#usage)
-* [.md-config.yaml](#md-configyaml)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [h2doc](#h2doc)
+- [Features](#features)
+- [Usage](#usage)
+  - [Configuration](#configuration)
+- [.md-config.yaml](#md-configyaml)
+- [Commands](#commands)
+  - [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+  - [`h2doc help [COMMAND]`](#h2doc-help-command)
+  - [`h2doc server [DIR]`](#h2doc-server-dir)
+  - [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
+  <!-- tocstop -->
 
 # Features
 
@@ -21,6 +27,9 @@ Process html to a specified format document(markdown currently), build-in Joplin
 - Download pictures in the html
 - Directory is a notebook
 - Collect and cache the tags from the front-matter of markdown
+  - Use the special tag format on the first tag to create folder through prefix `/` or `./`
+    - startsWith `/` means absolute path which relative to the `root` directory
+    - startsWith `./` means relative path of the `folder`
 - Save markdown and pictures to the current(specified) folder(`root`)
 - decides the rules for stored file name and dir name:
   1. markdown file with the same markdown name folder
@@ -47,6 +56,7 @@ Supported variables and functions:
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g h2doc
 $ h2doc COMMAND
@@ -58,6 +68,7 @@ USAGE
   $ h2doc COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 ## Configuration
@@ -74,7 +85,7 @@ The config file search order:
 # .md-config.yaml
 output:
   root: . # the root folder, defaults to current working directory.
-  exclude:
+  exclude: # do not include these folders:
     - node_modules
   deep: 5 # Specifies the maximum depth of a read directory relative to the root.
   markdown: ${folder}/${title}.md # whether use the smart slug as markdown file name
@@ -117,10 +128,11 @@ frontMatter: # whether use front matter(insert into markdown).
 # Commands
 
 <!-- commands -->
-* [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
-* [`h2doc help [COMMAND]`](#h2doc-help-command)
-* [`h2doc server [DIR]`](#h2doc-server-dir)
-* [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
+
+- [`h2doc autocomplete [SHELL]`](#h2doc-autocomplete-shell)
+- [`h2doc help [COMMAND]`](#h2doc-help-command)
+- [`h2doc server [DIR]`](#h2doc-server-dir)
+- [`h2doc tags [FOLDER]`](#h2doc-tags-folder)
 
 ## `h2doc autocomplete [SHELL]`
 
@@ -218,4 +230,5 @@ OPTIONS
 ```
 
 _See code: [src/oclif/commands/tags.ts](https://github.com/snowyu/h2doc/blob/v0.1.0-alpha.4/src/oclif/commands/tags.ts)_
+
 <!-- commandsstop -->
