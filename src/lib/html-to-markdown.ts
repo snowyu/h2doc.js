@@ -33,7 +33,7 @@ import {
 import { getMetadata } from './get-metadata';
 import { getTags, saveTags } from './list-tags';
 import { writeFile } from './write-file';
-import { simpleSlug } from './simple-slug';
+import { trimFilename } from './simple-slug';
 
 // import parseMarkdown from 'front-matter-markdown'
 
@@ -140,7 +140,7 @@ async function saveAssets({
   meta: any;
   imports: any;
 }) {
-  const assetDir = simpleSlug(
+  const assetDir = trimFilename(
     path.resolve(conf.root, template(conf.asset, { imports })(meta))
   );
   debug('assets Dir', assetDir);
@@ -237,7 +237,7 @@ async function saveAsset(
   meta.extname = extname;
 
   const basename = templated(meta);
-  const filename = simpleSlug(path.resolve(assetDir, basename + extname));
+  const filename = trimFilename(path.resolve(assetDir, basename + extname));
   debug('asset save:', path.relative(conf.root, filename));
   await writeFile(filename, response.rawBody, {
     encoding: 'binary',
@@ -262,7 +262,7 @@ async function saveMarkdown(
   imports: any
 ) {
   const root = conf.root;
-  const filename = simpleSlug(
+  const filename = trimFilename(
     path.resolve(root, template(conf.markdown, { imports })(meta))
   );
   const dirname = path.dirname(filename);
