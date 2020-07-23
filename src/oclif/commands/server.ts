@@ -47,6 +47,6 @@ export default class Server extends Command {
     flags.log = conf.log;
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
-    this.log(`listening on ${svr.info.uri}`);
+    // this.log(`listening on ${svr.info.uri}`);
   }
 }
