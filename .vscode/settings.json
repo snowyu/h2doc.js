@@ -3,10 +3,10 @@
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.organizeImports": false,
-    "source.fixAll.eslint": false
+    "source.fixAll.eslint": true
   },
 
   "files.exclude": {
@@ -63,7 +63,9 @@
     "tslib",
     "usagestop",
     "vfile"
-  ]
+  ],
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true
   // "typescript.implementationsCodeLens.enabled": true
   // "typescript.referencesCodeLens.enabled": true
 }
