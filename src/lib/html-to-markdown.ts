@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Debug from 'debug';
 import FileType from 'file-type';
-import got, { Response } from 'got';
+import got from 'got';
 import yaml from 'js-yaml';
 import slug from 'limax';
 import {
@@ -34,6 +34,8 @@ import { getMetadata } from './get-metadata';
 import { getTags, saveTags } from './list-tags';
 import { writeFile } from './write-file';
 import { trimFilename } from './simple-slug';
+import { dataUriToString, MimeString } from './data-uri-to-string';
+import { initXXHash, xxhash64 } from './xxhash';
 
 // import parseMarkdown from 'front-matter-markdown'
 
@@ -67,6 +69,7 @@ function getTemplateImports(conf: ApplicationConfig) {
 }
 
 export async function htmlToMarkdown(input: IInputOptions) {
+  await initXXHash();
   const conf: ApplicationConfig = await getConfig();
   const assets = new Set<string>();
   if (typeof input.tags === 'string') input.tags = [input.tags];
@@ -148,15 +151,27 @@ async function saveAssets({
   const limit = pLimit(5);
   const templated = template(conf.assetBaseName, { imports });
   const assets = urls.map(asset => {
-    const vUrl = url.resolve(input.url!, asset);
-    const filename = path.basename(
-      decodeURIComponent(path.basename(new url.URL(vUrl).pathname))
-    );
-    return {
-      filename,
-      url: vUrl,
-      src: asset,
-    };
+    let result: { filename: string; url: string; src: string | MimeString };
+    const vDataUrl = /(data[:]\w+[\/]\w+[;]\w+.*)/.exec(asset)?.[1];
+    if (vDataUrl) {
+      const src = dataUriToString(vDataUrl);
+      result = {
+        filename: xxhash64(src + ''),
+        url: '',
+        src,
+      };
+    } else {
+      const vUrl = url.resolve(input.url!, asset);
+      const filename = path.basename(
+        decodeURIComponent(path.basename(new url.URL(vUrl).pathname))
+      );
+      result = {
+        filename,
+        url: vUrl,
+        src: asset,
+      };
+    }
+    return result;
   });
   assets.forEach((asset, ix, arr) => {
     if (
@@ -188,7 +203,7 @@ async function saveAssets({
 }
 
 async function saveAsset(
-  asset: { url: string; src: string; filename: string },
+  asset: { url: string; src: string | MimeString; filename: string },
   index: number,
   conf: IOutputConfig,
   meta: any,
@@ -199,20 +214,26 @@ async function saveAsset(
   let assetBaseName = asset.filename; // path.basename(vUrl.pathname);
   let extname = path.extname(assetBaseName);
   assetBaseName = assetBaseName.slice(0, assetBaseName.length - extname.length);
-  debug('asset get:', asset.url);
-  let response: Response;
+  debug('asset get:', asset.url || 'data:' + assetBaseName);
+  let vBody: Buffer;
   let contentType: string | undefined;
   try {
-    response = await got(asset.url);
-    contentType = response.headers['content-type'];
+    if (asset.url) {
+      const response = await got(asset.url);
+      vBody = response.rawBody;
+      contentType = response.headers['content-type'];
+      if (!contentType) {
+        const vFiletype = await FileType.fromBuffer(response.rawBody);
+        if (vFiletype) contentType = vFiletype.mime;
+      }
+    } else {
+      const vSrc = asset.src as MimeString;
+      vBody = Buffer.from(vSrc + '', vSrc.encoding);
+      contentType = vSrc.type;
+    }
   } catch (err) {
     debug('asset got err:', err.message, asset.url);
     return;
-  }
-
-  if (!contentType) {
-    const vFiletype = await FileType.fromBuffer(response.rawBody);
-    if (vFiletype) contentType = vFiletype.mime;
   }
 
   if (contentType) {
@@ -239,7 +260,7 @@ async function saveAsset(
   const basename = templated(meta);
   const filename = trimFilename(path.resolve(assetDir, basename + extname));
   debug('asset save:', path.relative(conf.root, filename));
-  await writeFile(filename, response.rawBody, {
+  await writeFile(filename, vBody, {
     encoding: 'binary',
   });
   return { filename, asset, index };
