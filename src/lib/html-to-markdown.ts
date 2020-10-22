@@ -18,7 +18,7 @@ import pLimit from 'p-limit';
 import path from 'path.js';
 import shortid from 'shortid';
 import Turndown from 'turndown';
-import { gfw, strikethrough, tables, taskListItems } from 'turndown-plugin-gfm';
+import { gfm, strikethrough, tables, taskListItems } from 'turndown-plugin-gfm';
 import url from 'url';
 import inject from 'util-ex/lib/inject';
 import {
@@ -40,11 +40,11 @@ import { initXXHash, xxhash64 } from './xxhash';
 // import parseMarkdown from 'front-matter-markdown'
 
 const debug = Debug('h2doc:markdown');
-const GfwMaps = {
+const GfmMaps = {
   strikethrough,
   tables,
   taskListItems,
-  gfw,
+  gfm,
 };
 
 export interface IInputOptions {
@@ -342,16 +342,17 @@ async function getMetadataEx(
 
 function initTurndownService(conf: ApplicationConfig) {
   const turndownService = new Turndown(conf.format);
-  const hasGfw = conf.format?.gfw;
-  if (hasGfw) {
-    if (typeof hasGfw !== 'boolean') {
+  const hasGfm = conf.format?.gfm;
+  if (hasGfm) {
+    debug('enable gfm:', hasGfm);
+    if (typeof hasGfm !== 'boolean') {
       turndownService.use(
-        Object.keys(hasGfw)
+        Object.keys(hasGfm)
           .filter(Boolean)
-          .map(n => GfwMaps[n])
+          .map(n => GfmMaps[n])
       );
     } else {
-      turndownService.use(gfw);
+      turndownService.use(gfm);
     }
   }
   let imgRule!: Turndown.Rule;

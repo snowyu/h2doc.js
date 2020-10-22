@@ -55,10 +55,10 @@ export interface IFormatConfig {
   linkStyle?: 'inlined' | 'referenced';
   linkReferenceStyle?: 'full' | 'collapsed' | 'shortcut';
 
-  gfw?: boolean | IGfwFormatConfig;
+  gfm?: boolean | IGfmFormatConfig;
 }
 
-export interface IGfwFormatConfig {
+export interface IGfmFormatConfig {
   strikethrough?: boolean;
   tables?: boolean;
   taskListItems?: boolean;
