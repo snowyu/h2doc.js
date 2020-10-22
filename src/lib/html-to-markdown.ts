@@ -18,7 +18,12 @@ import pLimit from 'p-limit';
 import path from 'path.js';
 import shortid from 'shortid';
 import Turndown from 'turndown';
-import { gfm, strikethrough, tables, taskListItems } from 'turndown-plugin-gfm';
+import {
+  gfm,
+  strikethrough,
+  tables,
+  taskListItems,
+} from 'joplin-turndown-plugin-gfm';
 import url from 'url';
 import inject from 'util-ex/lib/inject';
 import {
