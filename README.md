@@ -100,7 +100,7 @@ format: # WARNING: these options maybe changed in the future
   strongDelimiter: '**' # ** or __
   linkStyle: 'inlined' # inlined or referenced
   linkReferenceStyle: 'full' # full, collapsed, or shortcut
-  gfw:
+  gfm:
     strikethrough: true # for converting <strike>, <s>, and <del> elements
     tables: true
     taskListItems: true
