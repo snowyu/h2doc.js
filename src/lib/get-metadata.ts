@@ -16,7 +16,7 @@ const metascraper = require('metascraper')([
 ]);
 
 const debug = Debug('h2doc:meta');
-
+const error = Debug('h2doc:error');
 import got from 'got';
 
 export async function getMetadata(url: string, html?: string) {
@@ -26,14 +26,14 @@ export async function getMetadata(url: string, html?: string) {
     url = response.url;
   }
   // const url = targetUrl;
-  debug('url:', url);
+  debug('getMetadata url:', url);
   let metadata;
   try {
     metadata = await metascraper({ html, url });
   } catch (e) {
-    debug('getMetadata error:', e);
+    error('getMetadata scraper error:', e);
     metadata = { url };
   }
-  debug('data:', metadata);
+  debug('getMetadata:', metadata);
   return metadata;
 }

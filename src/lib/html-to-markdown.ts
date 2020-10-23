@@ -73,6 +73,16 @@ function getTemplateImports(conf: ApplicationConfig) {
   };
 }
 
+function getDataUrl(aUrl: string) {
+  return /(data[:]\w+[\/]\w+[;]\w+.*)/.exec(aUrl)?.[1];
+}
+
+function ensureUrl(aUrl: string) {
+  const vDataUrl = getDataUrl(aUrl);
+  if (vDataUrl) aUrl = vDataUrl;
+  return aUrl;
+}
+
 export async function htmlToMarkdown(input: IInputOptions) {
   await initXXHash();
   const conf: ApplicationConfig = await getConfig();
@@ -96,8 +106,15 @@ export async function htmlToMarkdown(input: IInputOptions) {
   debug('save to folder', input.folder);
 
   conf.imgCallback = (node: HTMLImageElement) => {
-    const src = node?.getAttribute('src');
-    if (src) assets.add(src);
+    let src = node?.getAttribute('src');
+    if (src) {
+      const vDataUrl = getDataUrl(src);
+      if (vDataUrl) {
+        src = vDataUrl;
+        node.setAttribute('src', src);
+      }
+      assets.add(src);
+    }
   };
 
   const turndownService = initTurndownService(conf);
@@ -156,14 +173,13 @@ async function saveAssets({
   const limit = pLimit(5);
   const templated = template(conf.assetBaseName, { imports });
   const assets = urls.map(asset => {
-    let result: { filename: string; url: string; src: string | MimeString };
-    const vDataUrl = /(data[:]\w+[\/]\w+[;]\w+.*)/.exec(asset)?.[1];
-    if (vDataUrl) {
-      const src = dataUriToString(vDataUrl);
+    let result: { filename: string; url: string; src: string };
+    if (asset.startsWith('data:')) {
+      // const src = dataUriToString(asset);
       result = {
-        filename: xxhash64(src + ''),
+        filename: xxhash64(asset),
         url: '',
-        src,
+        src: asset,
       };
     } else {
       const vUrl = url.resolve(input.url!, asset);
@@ -208,7 +224,7 @@ async function saveAssets({
 }
 
 async function saveAsset(
-  asset: { url: string; src: string | MimeString; filename: string },
+  asset: { url: string; src: string; filename: string },
   index: number,
   conf: IOutputConfig,
   meta: any,
@@ -232,7 +248,7 @@ async function saveAsset(
         if (vFiletype) contentType = vFiletype.mime;
       }
     } else {
-      const vSrc = asset.src as MimeString;
+      const vSrc = dataUriToString(asset.src) as MimeString;
       vBody = Buffer.from(vSrc + '', vSrc.encoding);
       contentType = vSrc.type;
     }
@@ -342,6 +358,7 @@ async function getMetadataEx(
 
   if (!meta.date) meta.date = new Date().toISOString();
   meta = omitBy(meta, isNil);
+  if (meta.image) meta.image = ensureUrl(meta.image);
   return meta;
 }
 
@@ -349,7 +366,7 @@ function initTurndownService(conf: ApplicationConfig) {
   const turndownService = new Turndown(conf.format);
   const hasGfm = conf.format?.gfm;
   if (hasGfm) {
-    debug('enable gfm:', hasGfm);
+    debug('enable gfm format:', hasGfm);
     if (typeof hasGfm !== 'boolean') {
       turndownService.use(
         Object.keys(hasGfm)
