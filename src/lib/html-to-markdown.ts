@@ -74,7 +74,7 @@ function getTemplateImports(conf: ApplicationConfig) {
 }
 
 function getDataUrl(aUrl: string) {
-  return /(data[:]\w+[\/]\w+[;]\w+.*)/.exec(aUrl)?.[1];
+  return /(data[:][-\w.]+[\/][-\w.+]+[;]\w+.*)/.exec(aUrl)?.[1];
 }
 
 function ensureUrl(aUrl: string) {
