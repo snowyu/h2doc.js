@@ -9,7 +9,7 @@ import path from 'path.js';
 export function simpleSlug(s: string) {
   if (s) {
     s = trim(s);
-    s = s.replace(/[ ?:%!！：·\\–？=+_]/g, '-');
+    s = s.replace(/[ ?:%!！：·\\–？=,'"+_]/g, '-');
     s = s.replace(/([.\-])[.\-]+/g, '$1');
     s = s.replace(/(^[\-]+)|[.\-]+$/g, '');
   }
