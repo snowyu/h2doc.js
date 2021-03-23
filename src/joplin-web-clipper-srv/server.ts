@@ -15,6 +15,9 @@ export interface IServerOptions extends ServerOptions {
 
 export async function createJoplinWebClipperServer(
   options: IServerOptions = {
+    state: {
+        strictHeader: false
+    },
     port: 41184,
     host: 'localhost',
     timeout: 15000,
