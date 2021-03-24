@@ -14,15 +14,17 @@ export interface IServerOptions extends ServerOptions {
 }
 
 export async function createJoplinWebClipperServer(
-  options: IServerOptions = {
+  options?: IServerOptions
+) {
+  options = Object.assign({
     state: {
-        strictHeader: false
+      ignoreErrors: true,
+      strictHeader: false
     },
     port: 41184,
     host: 'localhost',
     timeout: 15000,
-  }
-) {
+  }, options)
   const timeout = options.timeout;
   const logOptions = Object.assign(
     {
@@ -43,6 +45,7 @@ export async function createJoplinWebClipperServer(
   const server = Hapi.server(options);
   const api = await createApi();
   if (typeof timeout === 'number') options.timeout = timeout;
+  console.log('TCL:: ~ file: server.ts ~ line 50 ~ options', options);
 
   // hapi plugin to gracefully stop your hapi server
   await server.register({
