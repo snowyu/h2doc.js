@@ -51,3 +51,5 @@ frontMatter: # whether use front matter.
   audio: true
 mimetype: !!inc/file md-config/mimetype.yaml
 log: !!inc/file md-config/log.yaml
+input:
+  maxBytes: 1073741824 # the max input size to process

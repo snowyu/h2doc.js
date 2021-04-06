@@ -1,3 +1,4 @@
+import { defaultsDeep } from 'lodash';
 import Hapi, { ServerOptions } from '@hapi/hapi';
 import plgPulse from 'hapi-pulse';
 import laabr from 'laabr';
@@ -13,18 +14,21 @@ export interface IServerOptions extends ServerOptions {
   log?: any;
 }
 
-export async function createJoplinWebClipperServer(
-  options?: IServerOptions
-) {
-  options = Object.assign({
+export async function createJoplinWebClipperServer(options?: IServerOptions) {
+  options = defaultsDeep({}, options, {
     state: {
       ignoreErrors: true,
-      strictHeader: false
+      strictHeader: false,
     },
     port: 41184,
     host: 'localhost',
     timeout: 15000,
-  }, options)
+    routes: {
+      payload: {
+        maxBytes: 1073741824,
+      },
+    },
+  }) as IServerOptions;
   const timeout = options.timeout;
   const logOptions = Object.assign(
     {
@@ -45,7 +49,6 @@ export async function createJoplinWebClipperServer(
   const server = Hapi.server(options);
   const api = await createApi();
   if (typeof timeout === 'number') options.timeout = timeout;
-  console.log('TCL:: ~ file: server.ts ~ line 50 ~ options', options);
 
   // hapi plugin to gracefully stop your hapi server
   await server.register({

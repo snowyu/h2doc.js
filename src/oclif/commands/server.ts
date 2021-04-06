@@ -45,6 +45,14 @@ export default class Server extends Command {
     const conf = await getConfig();
     this.log(`Web Clips will be stored on '${conf.output.root}' folder`);
     flags.log = conf.log;
+    const maxBytes = conf.input?.maxBytes;
+    if (Number.isInteger(maxBytes)) {
+      flags.routes = {
+        payload: {
+          maxBytes,
+        },
+      };
+    }
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
     // this.log(`listening on ${svr.info.uri}`);

@@ -15,6 +15,7 @@ export const mdConfig = new loadConfig({
 
 export interface ApplicationConfig {
   output: IOutputConfig;
+  input?: IInputConfig;
   /**
    * slug options, if it is string which means separator
    */
@@ -32,6 +33,10 @@ export interface IOutputConfig {
   markdown: string;
   asset: string;
   assetBaseName: string;
+}
+
+export interface IInputConfig {
+  maxBytes: number;
 }
 export interface ISlugOptions {
   custom?: string[] | { [key: string]: string };
