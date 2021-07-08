@@ -28,13 +28,13 @@ export async function createApi() {
         };
       });
       debug('listFolders:', result);
-      return h.response(result);
+      return (result);
     },
     async listTags(c: Context, req: Request, h: ResponseToolkit) {
       const tags = await getTags();
       debug('listTags:', tags);
 
-      return h.response(
+      return (
         tags.map(id => ({
           id,
           title: id,
@@ -48,6 +48,7 @@ export async function createApi() {
         title: body.title,
         folder: body.parent_id!,
         html: body.body_html!,
+        body: body.body!,
         tags: body.tags ? body.tags.split(',') : '',
         url: body.source_url,
       };
@@ -61,13 +62,15 @@ export async function createApi() {
       debug('note creating:', body.parent_id, body?.title);
       await htmlToMarkdown(input);
       debug('note created');
-      return h.response(body);
+      return (body);
     },
     ping(c: Context, req: Request, h: ResponseToolkit) {
-      return h.response('JoplinClipperServer');
+      return ('JoplinClipperServer');
     },
     notFound(c: Context, req: Request, h: ResponseToolkit) {
+      // h.response().code(404)
       h.response({ err: 'not found' }).code(404);
+      return { err: 'not found' }
     },
   });
 
