@@ -18,6 +18,7 @@ import pLimit from 'p-limit';
 import path from 'path.js';
 import shortid from 'shortid';
 import Turndown from 'turndown';
+import markdownLinkExtractor from 'markdown-link-extractor';
 import {
   gfm,
   strikethrough,
@@ -41,6 +42,7 @@ import { writeFile } from './write-file';
 import { trimFilename } from './simple-slug';
 import { dataUriToString, MimeString } from './data-uri-to-string';
 import { initXXHash, xxhash64 } from './xxhash';
+import { matchMines } from './match-mines';
 
 // import parseMarkdown from 'front-matter-markdown'
 
@@ -54,6 +56,7 @@ const GfmMaps = {
 
 export interface IInputOptions {
   html: string;
+  body?: string;
   title?: string;
   folder?: string;
   url?: string;
@@ -86,6 +89,7 @@ function ensureUrl(aUrl: string) {
 export async function htmlToMarkdown(input: IInputOptions) {
   await initXXHash();
   const conf: ApplicationConfig = await getConfig();
+  const downloadMimetype = getDownloadMimetype(conf.download);
   const assets = new Set<string>();
   if (typeof input.tags === 'string') input.tags = [input.tags];
   if (input.tags) {
@@ -118,7 +122,19 @@ export async function htmlToMarkdown(input: IInputOptions) {
   };
 
   const turndownService = initTurndownService(conf);
-  let content = turndownService.turndown(input.html);
+  let content = input.html ? turndownService.turndown(input.html) : input.body;
+  if (!input.html && input.body) {
+    const vLinks = markdownLinkExtractor(content);
+    vLinks.forEach(link => {
+        assets.add(link);
+    });
+  }
+  if (!content && input.url) {
+    const response = await got(input.url);
+    content = response.rawBody;
+    if (content) content = turndownService.turndown(content);
+    else throw new Error('No URL or html to convert')
+  }
   let metadata!: any;
   if (conf.frontMatter && input.url) {
     metadata = await getMetadataEx(conf.frontMatter, input, conf.slug);
@@ -134,7 +150,6 @@ export async function htmlToMarkdown(input: IInputOptions) {
   const meta = Object.assign({}, metadata, input, conf);
   const imports = getTemplateImports(conf);
   input.content = content;
-  const downloadMimetype = getDownloadMimetype(conf.download);
   if (downloadMimetype && downloadMimetype.length) {
     meta.mimetype = downloadMimetype;
     const savedAssets = await saveAssets({
@@ -145,7 +160,7 @@ export async function htmlToMarkdown(input: IInputOptions) {
       imports,
     });
     meta.assets = savedAssets;
-    debug('assets saved');
+    debug('All assets saved');
   }
   debug('markdown saving');
   await saveMarkdown(conf.output!, input, meta, imports);
@@ -240,7 +255,7 @@ async function saveAsset(
   let contentType: string | undefined;
   try {
     if (asset.url) {
-      const response = await got(asset.url);
+      const response = await got(asset.url, {timeout: 3000});
       vBody = response.rawBody;
       contentType = response.headers['content-type'];
       if (!contentType) {
@@ -258,6 +273,8 @@ async function saveAsset(
   }
 
   if (contentType) {
+    contentType = contentType.split(';')[0].trim()
+    if(!matchMines(contentType, meta.mimetype)) return;
     const vMime = mimetype[contentType];
     if (vMime) {
       const vExts = (vMime as any).extensions as string[];
@@ -270,7 +287,7 @@ async function saveAsset(
         extname = '.' + getShortExtension(vExts);
       }
     }
-  }
+  } else return;
 
   // const contentType = response.headers['content-type']
   // response.rawBody
@@ -278,12 +295,12 @@ async function saveAsset(
   meta.assetBaseName = assetBaseName;
   meta.extname = extname;
 
-  const basename = templated(meta);
+  const basename = templated(meta) || 'index';
   const filename = trimFilename(path.resolve(assetDir, basename + extname));
-  debug('asset save:', path.relative(conf.root, filename));
   await writeFile(filename, vBody, {
     encoding: 'binary',
   });
+  debug('asset saved:', path.relative(conf.root, filename));
   return { filename, asset, index };
 }
 

@@ -1,6 +1,6 @@
 # h2doc
 
-Process html to a specified format document(markdown currently), build-in Joplin Web Clipper Server for [Joplin Web Clipper](https://joplinapp.org/clipper/)
+Process html to a specified format document(markdown currently), build-in Joplin Web Clipper Server for [Joplin Web Clipper](https://joplinapp.org/clipper/) or [Web-clipper](https://github.com/webclipper/web-clipper)
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/h2doc.svg)](https://npmjs.org/package/h2doc)
