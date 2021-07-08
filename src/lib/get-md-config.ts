@@ -152,7 +152,7 @@ export function getDownloadMimetype(download?: boolean | IDownloadConfig) {
     result = ['media', 'document', 'archive'];
   }
   const mimetype = gMimetype || defaultMimetype;
-  result = result.map(m => mimetype[m] || m);
+  result = result.map(m => mimetype[m] || m).flat();
   return result;
 }
 
