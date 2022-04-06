@@ -1,3 +1,4 @@
+import Debug from 'debug';
 import fg from 'fast-glob';
 import parseMarkdown from 'front-matter-markdown';
 import yaml from 'js-yaml';
@@ -7,6 +8,8 @@ import { getConfig } from './get-md-config';
 import loadConfig from './load-config';
 import { readFile } from './read-file';
 import { writeFile } from './write-file';
+
+const debug = Debug('h2doc:list-tags');
 
 export const TagsFileName = '.md-tags.yaml';
 
@@ -34,13 +37,21 @@ export async function saveTagsTo(
   await writeFile(filepath, content);
 }
 
+function pMarkdown(content, opts) {
+  try {
+    return parseMarkdown(content, opts)
+  } catch (error) {
+    debug("Parse Markdown Error:", error)
+  }
+}
+
 export async function listTags(aPath: string) {
   const vPattern = ['markdown', 'md'].map(ext =>
     path.resolve(aPath, '**/*.' + ext)
   );
   const vPaths = await fg(vPattern, { onlyFiles: true, unique: true });
   const result: Set<string> = (await Promise.all(vPaths.map(p => readFile(p))))
-    .map(content => parseMarkdown(content, { content: false }))
+    .map(content => pMarkdown(content, { content: false }))
     .reduce(function (last, current: any) {
       const tag = current && (current.tag || current.tags);
       if (tag) {
