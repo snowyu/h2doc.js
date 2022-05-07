@@ -23,7 +23,9 @@ export function trim(s) {
 
 export function trimFilename(s: string) {
   s = trim(s);
+  const dirname = path.dirname(s)
+  s = path.basename(s)
   const basename = simpleSlug(path.replaceExt(s, ''));
   const extname = simpleSlug(path.extname(s));
-  return basename + extname;
+  return path.join(dirname, basename + extname);
 }
