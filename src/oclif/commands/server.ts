@@ -26,6 +26,10 @@ export default class Server extends Command {
       description: 'the timeout to serve',
       default: 15000,
     }),
+    skipCert: flags.boolean({
+      char: 's',
+      description: 'Skip the cert verification',
+    }),
     // flag with no value (-f, --force)
     // force: flags.boolean({ char: 'f' }),
   };
@@ -53,6 +57,11 @@ export default class Server extends Command {
         },
       };
     }
+    if (flags.skipCert) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    }
+    delete flags.skipCert;
+
     const svr = await createJoplinWebClipperServer(flags);
     await svr.start();
     // this.log(`listening on ${svr.info.uri}`);
